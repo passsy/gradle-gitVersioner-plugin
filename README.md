@@ -22,6 +22,7 @@ apply plugin: 'com.pascalwelsch.gitversioner'
 
 gitVersioner {
     baseBranch "develop"
+    //TODO add more
 }
 ```
 
