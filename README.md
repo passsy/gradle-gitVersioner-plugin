@@ -11,16 +11,31 @@ This projects aims to bring the SVN simplicity and more back to git for your gra
 ## Install
 
 ```gradle
-// Top-level build gradle
+// Top-level build.gradle
 buildscript {
     dependencies {
-        // soon on jcenter
-        classpath files('<path/to/repo>/' +
-                    'gitversioner/build/libs/gitversioner-0.1.0-SNAPSHOT.jar')
+        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.1.1'
     }
 }
 
 apply plugin: 'com.pascalwelsch.gitversioner'
+
+gitVersioner {
+    baseBranch "develop"
+}
+```
+
+
+```gradle
+// app module build.gradle
+
+android {
+
+    defaultConfig {
+        versionCode gitVersioner.versionCode()
+        versionName gitVersioner.versionName()
+    }
+}
 ```
 
 //TODO add sample
