@@ -38,8 +38,6 @@ android {
 }
 ```
 
-//TODO add sample
-
 # License
 
 ```
