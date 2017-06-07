@@ -112,8 +112,6 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
 internal fun parseShortStats(shortstat: String): LocalChanges {
     val parts = shortstat.split(",")
 
-    println(parts)
-
     var filesChanges = 0
     var additions = 0
     var deletions = 0
