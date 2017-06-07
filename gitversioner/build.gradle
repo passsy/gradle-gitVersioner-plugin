@@ -39,5 +39,5 @@ publish {
     groupId = project.group
     artifactId = 'gitversioner'
     publishVersion = project.version
-    website = 'https://github.com/passsy/gradle-git-version-plugin'
+    website = 'https://github.com/passsy/gradle-gitVersioner-plugin'
 }
