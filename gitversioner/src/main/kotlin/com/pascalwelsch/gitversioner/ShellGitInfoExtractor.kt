@@ -34,7 +34,7 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
 
     override val localChanges: LocalChanges by lazy {
         if (!isGitProjectReady) return@lazy NO_CHANGES
-        val shortStat = "git diff --shortstat".execute().text().trim()
+        val shortStat = "git diff HEAD --shortstat".execute().text().trim()
         if (shortStat.isEmpty()) return@lazy NO_CHANGES
 
         return@lazy parseShortStats(shortStat)
