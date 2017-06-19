@@ -3,6 +3,7 @@ package com.pascalwelsch.gitversioner
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+@Suppress("RedundantVisibilityModifier")
 public class GitVersionerPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {

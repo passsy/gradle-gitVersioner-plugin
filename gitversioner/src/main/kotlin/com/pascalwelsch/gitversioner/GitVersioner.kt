@@ -6,6 +6,7 @@ private val YEAR_IN_SECONDS = TimeUnit.DAYS.toSeconds(365)
 
 public val NO_CHANGES = LocalChanges(0, 0, 0)
 
+@Suppress("RedundantVisibilityModifier")
 public open class GitVersioner internal constructor(private val gitInfoExtractor: GitInfoExtractor) {
 
     public var baseBranch: String = "master"
