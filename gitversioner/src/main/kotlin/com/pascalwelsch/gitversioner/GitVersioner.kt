@@ -146,7 +146,6 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
         gitInfoExtractor.commitsToHead.filter { !baseBranchCommits.contains(it) }
     }
 
-
     companion object {
 
         @JvmStatic
@@ -213,5 +212,11 @@ public data class LocalChanges(
 ) {
     override fun toString(): String {
         return "$filesChanged +$additions -$deletions"
+    }
+
+    fun shortStats(): String = if (filesChanged + additions + deletions == 0) {
+        "no changes"
+    } else {
+        "files changed: $filesChanged, additions(+): $additions, deletions(-): $deletions"
     }
 }
