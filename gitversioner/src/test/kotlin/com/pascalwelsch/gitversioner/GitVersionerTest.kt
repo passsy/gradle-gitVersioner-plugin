@@ -31,8 +31,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -67,8 +67,8 @@ class GitVersionerTest {
         versioner.addSnapshot = false
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11(3 +5 -7)")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11(3 +5 -7)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -103,8 +103,8 @@ class GitVersionerTest {
         versioner.addLocalChangesDetails = false
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11-SNAPSHOT")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11-SNAPSHOT")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -140,8 +140,8 @@ class GitVersionerTest {
         versioner.addSnapshot = false
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -175,8 +175,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11-SNAPSHOT(3 +5 -7)")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11-SNAPSHOT(3 +5 -7)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -211,8 +211,8 @@ class GitVersionerTest {
         }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(0)
-            softly.assertThat(versioner.versionName()).isEqualTo("0-master+11")
+            softly.assertThat(versioner.versionCode).isEqualTo(0)
+            softly.assertThat(versioner.versionName).isEqualTo("0-master+11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -243,8 +243,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(0)
-            softly.assertThat(versioner.versionName()).isEqualTo("0-orphan+1")
+            softly.assertThat(versioner.versionCode).isEqualTo(0)
+            softly.assertThat(versioner.versionName).isEqualTo("0-orphan+1")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(1)
             softly.assertThat(versioner.branchName).isEqualTo("orphan")
@@ -275,8 +275,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(0)
-            softly.assertThat(versioner.versionName()).isEqualTo("0-x+3")
+            softly.assertThat(versioner.versionCode).isEqualTo(0)
+            softly.assertThat(versioner.versionName).isEqualTo("0-x+3")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(3)
             softly.assertThat(versioner.branchName).isEqualTo("feature/x")
@@ -301,8 +301,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(1)
-            softly.assertThat(versioner.versionName()).isEqualTo("1")
+            softly.assertThat(versioner.versionCode).isEqualTo(1)
+            softly.assertThat(versioner.versionName).isEqualTo("1")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(1)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -325,8 +325,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(1)
-            softly.assertThat(versioner.versionName()).isEqualTo("1")
+            softly.assertThat(versioner.versionCode).isEqualTo(1)
+            softly.assertThat(versioner.versionName).isEqualTo("1")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(1)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -365,8 +365,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(2)
-            softly.assertThat(versioner.versionName()).isEqualTo("2")
+            softly.assertThat(versioner.versionCode).isEqualTo(2)
+            softly.assertThat(versioner.versionName).isEqualTo("2")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -389,8 +389,8 @@ class GitVersionerTest {
         val versioner2 = GitVersioner(git2)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner2.versionCode()).isEqualTo(3)
-            softly.assertThat(versioner2.versionName()).isEqualTo("3")
+            softly.assertThat(versioner2.versionCode).isEqualTo(3)
+            softly.assertThat(versioner2.versionName).isEqualTo("3")
             softly.assertThat(versioner2.baseBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner2.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner2.branchName).isEqualTo("master")
@@ -414,8 +414,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(2)
-            softly.assertThat(versioner.versionName()).isEqualTo("2")
+            softly.assertThat(versioner.versionCode).isEqualTo(2)
+            softly.assertThat(versioner.versionName).isEqualTo("2")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -438,8 +438,8 @@ class GitVersionerTest {
         val versioner2 = GitVersioner(git2)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner2.versionCode()).isEqualTo(1002)
-            softly.assertThat(versioner2.versionName()).isEqualTo("1002")
+            softly.assertThat(versioner2.versionCode).isEqualTo(1002)
+            softly.assertThat(versioner2.versionName).isEqualTo("1002")
             softly.assertThat(versioner2.baseBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner2.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner2.branchName).isEqualTo("master")
@@ -465,8 +465,8 @@ class GitVersionerTest {
         versioner.yearFactor = 1200
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(1202)
-            softly.assertThat(versioner.versionName()).isEqualTo("1202")
+            softly.assertThat(versioner.versionCode).isEqualTo(1202)
+            softly.assertThat(versioner.versionName).isEqualTo("1202")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -485,8 +485,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(-1)
-            softly.assertThat(versioner.versionName()).isEqualTo("undefined")
+            softly.assertThat(versioner.versionCode).isEqualTo(-1)
+            softly.assertThat(versioner.versionName).isEqualTo("undefined")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isNull()
@@ -505,8 +505,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(0)
-            softly.assertThat(versioner.versionName()).isEqualTo("0")
+            softly.assertThat(versioner.versionCode).isEqualTo(0)
+            softly.assertThat(versioner.versionName).isEqualTo("0")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isNull()
@@ -527,8 +527,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(0)
-            softly.assertThat(versioner.versionName()).isEqualTo("0-SNAPSHOT(3 +5 -7)")
+            softly.assertThat(versioner.versionCode).isEqualTo(0)
+            softly.assertThat(versioner.versionName).isEqualTo("0-SNAPSHOT(3 +5 -7)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isNull()
@@ -575,8 +575,8 @@ class GitVersionerTest {
         }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(9)
-            softly.assertThat(versioner.versionName()).isEqualTo("9-ABC-12345+2")
+            softly.assertThat(versioner.versionCode).isEqualTo(9)
+            softly.assertThat(versioner.versionName).isEqualTo("9-ABC-12345+2")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(9)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.branchName).isEqualTo("fix_ABC-12345_nothing_special")
@@ -614,8 +614,8 @@ class GitVersionerTest {
         }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(9)
-            softly.assertThat(versioner.versionName()).isEqualTo("I do my own thing 11")
+            softly.assertThat(versioner.versionCode).isEqualTo(9)
+            softly.assertThat(versioner.versionName).isEqualTo("I do my own thing 11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(9)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.branchName).isEqualTo("fix_ABC-12345_nothing_special")
@@ -648,8 +648,8 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(9)
-            softly.assertThat(versioner.versionName()).isEqualTo("9-X+2")
+            softly.assertThat(versioner.versionCode).isEqualTo(9)
+            softly.assertThat(versioner.versionName).isEqualTo("9-X+2")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(9)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.branchName).isNull()
@@ -684,8 +684,8 @@ class GitVersionerTest {
         versioner.shortNameFormatter = { throw Exception("fail!") }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(9)
-            softly.assertThat(versioner.versionName()).isEqualTo("9-X+2")
+            softly.assertThat(versioner.versionCode).isEqualTo(9)
+            softly.assertThat(versioner.versionName).isEqualTo("9-X+2")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(9)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(2)
             softly.assertThat(versioner.branchName).isNull()
@@ -720,8 +720,8 @@ class GitVersionerTest {
         versioner.formatter = { throw Exception("fail!") }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")
@@ -758,8 +758,8 @@ class GitVersionerTest {
         versioner.ciBranchNameProvider = { "nameFromCi" }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11-nameFromCi")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11-nameFromCi")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("nameFromCi")
@@ -796,8 +796,8 @@ class GitVersionerTest {
         versioner.ciBranchNameProvider = { "master" }
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(11)
-            softly.assertThat(versioner.versionName()).isEqualTo("11")
+            softly.assertThat(versioner.versionCode).isEqualTo(11)
+            softly.assertThat(versioner.versionName).isEqualTo("11")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("master")

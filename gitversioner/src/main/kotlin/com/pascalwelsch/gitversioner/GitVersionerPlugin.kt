@@ -17,11 +17,11 @@ public class GitVersionerPlugin : Plugin<Project> {
         // add extension to root project, makes sense only once per project
         val gitVersionExtractor = ShellGitInfoExtractor(rootProject)
         val gitVersioner = rootProject.extensions.create("gitVersioner",
-                GitVersioner::class.java, gitVersionExtractor)
+                GitVersioner::class.java, gitVersionExtractor, project.logger)
 
         project.task("gitVersion").apply {
             group = "Help"
-            description = "displays the version information extracted from git history"
+            description = "Displays the version information extracted from git history"
             doLast {
                 with(gitVersioner) {
 
@@ -30,8 +30,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode()}
-                        |VersionName: ${versionName()}
+                        |VersionCode: ${versionCode}
+                        |VersionName: ${versionName}
                         |
                         |baseBranch: $baseBranch
                         |
@@ -51,8 +51,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode()}
-                        |VersionName: ${versionName()}
+                        |VersionCode: ${versionCode}
+                        |VersionName: ${versionName}
                         |
                         |baseBranch: $baseBranch
                         |current branch: $branchName
@@ -68,5 +68,14 @@ public class GitVersionerPlugin : Plugin<Project> {
                 }
             }
         }
+
+
+        project.tasks.create("generateGitVersionName", GenerateGitVersionName::class.java).apply {
+            this.gitVersioner = gitVersioner
+
+            group = "Build"
+            description = "analyzes the git history and creates a version name (generates machine readable output file)"
+        }
+
     }
 }

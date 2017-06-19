@@ -1,6 +1,9 @@
 package com.pascalwelsch.gitversioner
 
 import org.assertj.core.api.SoftAssertions
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import org.gradle.internal.logging.source.NoOpLoggingSystem
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -30,8 +33,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123+4-SNAPSHOT(3 +5 -7)")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123+4-SNAPSHOT(3 +5 -7)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(4)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -67,8 +70,8 @@ class FeatureBranchTest {
         versioner.addLocalChangesDetails = false
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123+4-SNAPSHOT")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123+4-SNAPSHOT")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(4)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -101,8 +104,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123+4")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123+4")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(4)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -131,8 +134,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -162,8 +165,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123-SNAPSHOT(1 +2 -0)")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123-SNAPSHOT(1 +2 -0)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -193,8 +196,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123-SNAPSHOT(1 +0 -2)")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123-SNAPSHOT(1 +0 -2)")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -224,8 +227,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(7)
-            softly.assertThat(versioner.versionName()).isEqualTo("7-bug_123+1")
+            softly.assertThat(versioner.versionCode).isEqualTo(7)
+            softly.assertThat(versioner.versionName).isEqualTo("7-bug_123+1")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(7)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(1)
             softly.assertThat(versioner.branchName).isEqualTo("feature/bug_123")
@@ -255,8 +258,8 @@ class FeatureBranchTest {
         val versioner = GitVersioner(git)
 
         SoftAssertions.assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode()).isEqualTo(5)
-            softly.assertThat(versioner.versionName()).isEqualTo("5-abcdefg+3")
+            softly.assertThat(versioner.versionCode).isEqualTo(5)
+            softly.assertThat(versioner.versionName).isEqualTo("5-abcdefg+3")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(5)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(3)
             softly.assertThat(versioner.branchName).isNull()

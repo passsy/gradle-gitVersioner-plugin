@@ -1,13 +1,18 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package com.pascalwelsch.gitversioner
 
+import org.gradle.api.logging.Logger
 import java.util.concurrent.TimeUnit
 
 private val YEAR_IN_SECONDS = TimeUnit.DAYS.toSeconds(365)
 
 public val NO_CHANGES = LocalChanges(0, 0, 0)
 
-@Suppress("RedundantVisibilityModifier")
-public open class GitVersioner internal constructor(private val gitInfoExtractor: GitInfoExtractor) {
+public open class GitVersioner internal constructor(
+        private val gitInfoExtractor: GitInfoExtractor,
+        private val logger: Logger? = null
+) {
 
     public var baseBranch: String = "master"
 
@@ -30,28 +35,51 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
     /**
      * base branch commit count + [timeComponent]
      */
+    @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
-        if (!gitInfoExtractor.isGitProjectReady) {
-            return -1 // this is actually a valid android versionCode
-        }
+        logger?.warn(
+                "method versionCode() is deprecated, use the property versionCode instead")
+        return versionCode
+    }
 
-        val commitComponent = baseBranchCommits.size
-        return commitComponent + timeComponent
+    /**
+     * base branch commit count + [timeComponent]
+     */
+    public val versionCode: Int by lazy {
+        var code = -1 // default, this is actually a valid android versionCode
+        if (gitInfoExtractor.isGitProjectReady) {
+            val commitComponent = baseBranchCommits.size
+            code = commitComponent + timeComponent
+        }
+        logger?.debug("git versionCode: $code")
+        return@lazy code
     }
 
     /**
      * string representation powered by [formatter]
      */
+    @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
-        if (!gitInfoExtractor.isGitProjectReady) {
-            return "undefined"
+        logger?.warn(
+                "method versionName() is deprecated, use the property versionName instead")
+        return versionName
+    }
+
+    /**
+     * string representation powered by [formatter]
+     */
+    public val versionName: String by lazy {
+        var name = "undefined"
+        if (gitInfoExtractor.isGitProjectReady) {
+            name = try {
+                formatter(this).toString()
+            } catch (e: Throwable) {
+                logger?.info("formatter failed to generate a correct name, using default formatter")
+                DEFAULT_FORMATTER(this).toString()
+            }
+            logger?.debug("git versionName: $name")
         }
-        try {
-            return formatter(this).toString()
-        } catch (e: Throwable) {
-            println("formatter failed to generate a correct name, using default formatter")
-            return DEFAULT_FORMATTER(this).toString()
-        }
+        return@lazy name
     }
 
     /**
@@ -151,7 +179,7 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
         @JvmStatic
         public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
             with(versioner) {
-                val sb = StringBuilder(versioner.versionCode().toString())
+                val sb = StringBuilder(versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
                 if (baseBranch != branchName && hasCommits) {
                     // add branch identifier for
