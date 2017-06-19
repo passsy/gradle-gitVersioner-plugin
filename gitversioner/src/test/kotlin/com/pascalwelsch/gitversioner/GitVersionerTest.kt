@@ -733,4 +733,80 @@ class GitVersionerTest {
             softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo("X")
         }
     }
+
+    @Test
+    fun `default - branchname from ci`() {
+        val graph = listOf(
+                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD, master
+                Commit(sha1 = "j", parent = "i", date = 150_009_000),
+                Commit(sha1 = "i", parent = "h", date = 150_008_000),
+                Commit(sha1 = "h", parent = "g", date = 150_007_000),
+                Commit(sha1 = "g", parent = "f", date = 150_006_000),
+                Commit(sha1 = "f", parent = "e", date = 150_005_000),
+                Commit(sha1 = "e", parent = "d", date = 150_004_000),
+                Commit(sha1 = "d", parent = "c", date = 150_003_000),
+                Commit(sha1 = "c", parent = "b", date = 150_002_000),
+                Commit(sha1 = "b", parent = "a", date = 150_001_000),
+                Commit(sha1 = "a", parent = null, date = 150_000_000)
+        )
+
+        val git = object: MockGitRepo(graph, "X", listOf("X" to "master")) {
+            // explicitly checked out sha1 not branch
+            override val currentBranch: String? = null
+        }
+        val versioner = GitVersioner(git)
+        versioner.ciBranchNameProvider = { "nameFromCi" }
+
+        assertSoftly { softly ->
+            softly.assertThat(versioner.versionCode()).isEqualTo(11)
+            softly.assertThat(versioner.versionName()).isEqualTo("11-nameFromCi")
+            softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
+            softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
+            softly.assertThat(versioner.branchName).isEqualTo("nameFromCi")
+            softly.assertThat(versioner.currentSha1).isEqualTo("X")
+            softly.assertThat(versioner.baseBranch).isEqualTo("master")
+            softly.assertThat(versioner.localChanges).isEqualTo(NO_CHANGES)
+            softly.assertThat(versioner.yearFactor).isEqualTo(1000)
+            softly.assertThat(versioner.timeComponent).isEqualTo(0)
+            softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo("X")
+        }
+    }
+
+    @Test
+    fun `default - receice default branchname from ci`() {
+        val graph = listOf(
+                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
+                Commit(sha1 = "j", parent = "i", date = 150_009_000),
+                Commit(sha1 = "i", parent = "h", date = 150_008_000),
+                Commit(sha1 = "h", parent = "g", date = 150_007_000),
+                Commit(sha1 = "g", parent = "f", date = 150_006_000),
+                Commit(sha1 = "f", parent = "e", date = 150_005_000),
+                Commit(sha1 = "e", parent = "d", date = 150_004_000),
+                Commit(sha1 = "d", parent = "c", date = 150_003_000),
+                Commit(sha1 = "c", parent = "b", date = 150_002_000),
+                Commit(sha1 = "b", parent = "a", date = 150_001_000),
+                Commit(sha1 = "a", parent = null, date = 150_000_000)
+        )
+
+        val git = object: MockGitRepo(graph, "X", listOf("X" to "master")) {
+            // explicitly checked out sha1 not branch
+            override val currentBranch: String? = null
+        }
+        val versioner = GitVersioner(git)
+        versioner.ciBranchNameProvider = { "master" }
+
+        assertSoftly { softly ->
+            softly.assertThat(versioner.versionCode()).isEqualTo(11)
+            softly.assertThat(versioner.versionName()).isEqualTo("11")
+            softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(11)
+            softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)
+            softly.assertThat(versioner.branchName).isEqualTo("master")
+            softly.assertThat(versioner.currentSha1).isEqualTo("X")
+            softly.assertThat(versioner.baseBranch).isEqualTo("master")
+            softly.assertThat(versioner.localChanges).isEqualTo(NO_CHANGES)
+            softly.assertThat(versioner.yearFactor).isEqualTo(1000)
+            softly.assertThat(versioner.timeComponent).isEqualTo(0)
+            softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo("X")
+        }
+    }
 }

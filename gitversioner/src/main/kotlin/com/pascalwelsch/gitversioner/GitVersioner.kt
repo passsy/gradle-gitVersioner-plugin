@@ -21,6 +21,11 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
 
     public var shortNameFormatter: ((GitVersioner) -> CharSequence) = DEFAULT_SHORT_NAME_FORMATTER
 
+    public var ciBranchNameProvider: () -> CharSequence? = {
+        // get branch name on jenkins
+        System.getenv("BRANCH") ?: System.getenv("BRANCH_NAME")
+    }
+
     //TODO add offset
     /**
      * base branch commit count + [timeComponent]
@@ -59,8 +64,10 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
     /**
      * the name of the branch HEAD is currently on
      */
-    public val branchName: String?
-            = if (!gitInfoExtractor.isGitProjectReady) null else gitInfoExtractor.currentBranch
+    public val branchName: String? get() {
+        if (!gitInfoExtractor.isGitProjectReady) return null
+        return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
+    }
 
     /**
      * all commits in [baseBranch] without the [featureBranchCommits]
@@ -171,13 +178,10 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
             var name: String? = null
             if (name == null) {
                 // use branch name from git
-                if (versioner.branchName != null && !versioner.branchName.isEmpty()) {
-                    name = versioner.branchName
+                val branchName = versioner.branchName
+                if (branchName != null && !branchName.isEmpty()) {
+                    name = branchName
                 }
-            }
-            if (name == null) {
-                // get branch name on jenkins
-                name = System.getenv("BRANCH") ?: System.getenv("BRANCH_NAME")
             }
             if (name == null) {
                 // nothing found fallback to sha1

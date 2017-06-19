@@ -9,7 +9,7 @@ data class Commit(
 /**
  * Mocks a real git repo with commit history and branches
  */
-class MockGitRepo(
+open class MockGitRepo(
         val graph: Collection<Commit> = emptyList(),
         val head: String? = null,
         val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
