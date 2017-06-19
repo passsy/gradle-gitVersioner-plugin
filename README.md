@@ -14,7 +14,7 @@ This projects aims to bring the SVN simplicity and more back to git for your gra
 // Top-level build.gradle
 buildscript {
     dependencies {
-        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.1.1'
+        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.2.0'
     }
 }
 
