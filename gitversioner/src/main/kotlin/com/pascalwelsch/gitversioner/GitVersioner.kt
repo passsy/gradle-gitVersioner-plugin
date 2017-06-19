@@ -115,6 +115,15 @@ public open class GitVersioner internal constructor(private val gitInfoExtractor
      */
     public val featureBranchOriginCommit: String? by lazy { baseBranchCommits.firstOrNull() }
 
+    /**
+     * sha1 of the initial commit of the git tree, first commit
+     */
+    public val initialCommit: String? by lazy { baseBranchCommits.last() }
+
+    /**
+     * whether git can be used to extract data
+     */
+    public val isGitInitialized: Boolean = gitInfoExtractor.isGitProjectReady
 
     /**
      * commits of base branch in history of current commit (HEAD).
