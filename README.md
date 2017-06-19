@@ -33,8 +33,8 @@ gitVersioner {
 android {
 
     defaultConfig {
-        versionCode gitVersioner.versionCode()
-        versionName gitVersioner.versionName()
+        versionCode gitVersioner.versionCode
+        versionName gitVersioner.versionName
     }
 }
 ```
