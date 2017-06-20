@@ -41,9 +41,11 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
     }
 
     override val initialCommitDate: Long by lazy {
-        val time = "git log --pretty=format:'%at' --max-parents=0".execute()
+        val initialCommit: String = commitsToHead.lastOrNull() ?: return@lazy 0L
+        val time = "git log $initialCommit -n 1 --pretty=format:'%at'".execute()
                 .text().replace("\'", "").trim()
-        return@lazy if (time.isEmpty()) 0 else time.toLong()
+
+        return@lazy if (time.isEmpty()) 0L else time.toLong()
     }
 
     override fun commitDate(rev: String): Long {
