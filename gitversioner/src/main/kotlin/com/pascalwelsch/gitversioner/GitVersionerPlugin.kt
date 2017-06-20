@@ -30,8 +30,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode}
-                        |VersionName: ${versionName}
+                        |VersionCode: $versionCode
+                        |VersionName: $versionName
                         |
                         |baseBranch: $baseBranch
                         |
@@ -51,8 +51,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode}
-                        |VersionName: ${versionName}
+                        |VersionCode: $versionCode
+                        |VersionName: $versionName
                         |
                         |baseBranch: $baseBranch
                         |current branch: $branchName
@@ -61,6 +61,12 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |baseBranch commits: $baseBranchCommitCount ($baseBranchRange)
                         |featureBranch commits: $featureBranchCommitCount ($featureBranchRange)
                         |
+                        |baseBranchMergeCommits: $baseBranchMergeCommitCount
+                        |commitsSinceLastBaseMerge: $commitsSinceLastMerge
+                        |timeComponentSinceLastMerge: $timeComponentSinceLastMerge
+                        |baseBranchFirstClassMergeCommits: $baseBranchFirstClassMergeCommitCount
+                        |baseBranchMergeCommitsSinceLastFirstClassMerge: ${baseBranchMergeCommitsSinceLastFirstClassMerge.count()}
+                        |
                         |timeComponent: $timeComponent (yearFactor:$yearFactor)
                         |
                         |LocalChanges: ${localChanges.shortStats()}
@@ -68,7 +74,6 @@ public class GitVersionerPlugin : Plugin<Project> {
                 }
             }
         }
-
 
         project.tasks.create("generateGitVersionName", GenerateGitVersionName::class.java).apply {
             this.gitVersioner = gitVersioner

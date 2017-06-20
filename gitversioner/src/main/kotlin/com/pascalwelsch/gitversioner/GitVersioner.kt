@@ -38,7 +38,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
         logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                        "use the property GitVersioner.versionCode instead")
+                "use the property GitVersioner.versionCode instead")
         return versionCode
     }
 
@@ -61,7 +61,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
         logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                        "use the property GitVersioner.versionName instead")
+                "use the property GitVersioner.versionName instead")
         return versionName
     }
 
@@ -112,6 +112,55 @@ public open class GitVersioner internal constructor(
      */
     public val commitCount: Int by lazy { baseBranchCommitCount + featureBranchCommitCount }
 
+    private val mergeCommitCount: Int by lazy { gitInfoExtractor.mergeCommitsToHead.count() }
+
+    public val baseBranchMergeCommitCount: Int by lazy { baseBranchMergeCommits.count() }
+
+    public val baseBranchMergeCommits: List<String> by lazy {
+        val baseMergeCommits = gitInfoExtractor.commitsUpTo(baseBranch, "--min-parents=2")
+        val commitsToHead = gitInfoExtractor.commitsToHead
+        return@lazy baseMergeCommits.filter { commitsToHead.contains(it) }
+    }
+
+    public val baseBranchMergeCommitsSinceLastFirstClassMerge: List<String> by lazy {
+        val lastFirstMerge = baseBranchFirstClassMergeCommits.firstOrNull()
+        val baseMergeCommits = gitInfoExtractor.commitsUpTo(baseBranch, "--min-parents=2")
+        val commitsToHead = gitInfoExtractor.commitsToHead
+        return@lazy baseMergeCommits
+                .takeWhile { it != lastFirstMerge }
+                .filter { commitsToHead.contains(it) }
+
+
+        //val baseMergeCommits = gitInfoExtractor.commitsUpTo(baseBranch, "--min-parents=2")
+        //val commitsToHead = gitInfoExtractor.commitsToHead
+        //return@lazy baseMergeCommits.filter { commitsToHead.contains(it) }
+    }
+
+    public val baseBranchFirstClassMergeCommitCount: Int by lazy {
+        return@lazy baseBranchFirstClassMergeCommits.count()
+    }
+
+    public val baseBranchFirstClassMergeCommits: List<String> by lazy {
+        val baseMergeCommits = gitInfoExtractor
+                .commitsUpTo(baseBranch, "--min-parents=2 --first-parent")
+        val commitsToHead = gitInfoExtractor.commitsToHead
+        return@lazy baseMergeCommits.filter { commitsToHead.contains(it) }
+    }
+
+    public val commitsSinceLastMerge: Int by lazy {
+        val lastMerge = baseBranchMergeCommits.firstOrNull()
+        return@lazy gitInfoExtractor.commitsToHead.takeWhile { it != lastMerge }.count()
+    }
+
+    public val timeComponentSinceLastMerge: Int by lazy {
+        if (!gitInfoExtractor.isGitProjectReady) return@lazy 0
+        val latestMerge = baseBranchMergeCommits.firstOrNull() ?: return@lazy 0
+
+        val timeToHead = gitInfoExtractor.commitDate("HEAD") - gitInfoExtractor.commitDate(
+                latestMerge)
+        return@lazy (timeToHead * yearFactor / YEAR_IN_SECONDS + 0.5).toInt()
+    }
+
     /**
      * full sha1 of current commit
      *
@@ -158,13 +207,9 @@ public open class GitVersioner internal constructor(
      */
     private val baseBranchCommits: List<String> by lazy {
         val baseCommits = gitInfoExtractor.commitsUpTo(baseBranch)
-        baseCommits.forEach { baseCommit ->
-            if (gitInfoExtractor.commitsToHead.contains(baseCommit)) {
-                return@lazy baseCommits
-            }
-        }
 
-        return@lazy emptyList<String>()
+        val commitsToHead = gitInfoExtractor.commitsToHead
+        return@lazy baseCommits.filter { commitsToHead.contains(it) }
     }
 
     /**
@@ -205,6 +250,30 @@ public open class GitVersioner internal constructor(
                         sb.append("(").append(localChanges).append(")")
                     }
                 }
+                sb.toString()
+            }
+        }
+
+        @JvmStatic
+        public val LIB_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
+            with(versioner) {
+                // TODO add time component to commits
+                val sb = StringBuilder("${baseBranchFirstClassMergeCommits.count()}" +
+                        ".${baseBranchMergeCommitsSinceLastFirstClassMerge.count()}." +
+                        "${commitsSinceLastMerge + timeComponentSinceLastMerge}")
+
+                val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
+                if (baseBranch != branchName && hasCommits) {
+                    val shortName = try {
+                        shortNameFormatter(versioner)
+                    } catch (e: Throwable) {
+                        println("shortNameFormatter failed to generate a correct name, using default formatter")
+                        DEFAULT_SHORT_NAME_FORMATTER(versioner).toString()
+                    }
+
+                    sb.append("-").append(shortName)
+                }
+                sb.append("-$currentSha1Short")
                 sb.toString()
             }
         }

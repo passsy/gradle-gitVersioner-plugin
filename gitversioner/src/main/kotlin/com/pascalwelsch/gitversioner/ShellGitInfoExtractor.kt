@@ -11,6 +11,7 @@ interface GitInfoExtractor {
     val initialCommitDate: Long
     val commitsToHead: List<String>
     val isGitProjectReady: Boolean
+    val mergeCommitsToHead: List<String>
     fun commitDate(rev: String): Long
     fun commitsUpTo(rev: String, args: String = ""): List<String>
 }
@@ -51,10 +52,16 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
     override fun commitDate(rev: String): Long {
         val time = "git log $rev --pretty=format:'%at' -n 1".execute()
                 .text().replace("\'", "").trim()
-        return if (time.isEmpty()) 0 else time.toLong()
+        return if (time.isEmpty()) 0L else time.toLong()
     }
 
-    override val commitsToHead: List<String> by lazy { commitsUpTo("HEAD") }
+    override val commitsToHead: List<String> by lazy {
+        commitsUpTo("HEAD")
+    }
+
+    override val mergeCommitsToHead: List<String> by lazy {
+        commitsUpTo("HEAD", "--min-parents=2")
+    }
 
     override val isGitProjectReady: Boolean by lazy {
         val result = "git status".execute()
@@ -86,6 +93,7 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
             lines = process.inputStream.bufferedReader().readLines()
         } catch (e: Exception) {
             try {
+                println("fetch remote $rev")
                 process = "git rev-list origin/$rev $args".execute()
                 lines = process.inputStream.bufferedReader().readLines()
             } catch (e: Exception) {

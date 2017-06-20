@@ -3,7 +3,8 @@ package com.pascalwelsch.gitversioner
 data class Commit(
         val sha1: String,
         val parent: String?,
-        val date: Long
+        val date: Long,
+        val merge: Boolean = false
 )
 
 /**
@@ -15,8 +16,7 @@ open class MockGitRepo(
         val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
         override val localChanges: LocalChanges = NO_CHANGES,
         override val isGitProjectReady: Boolean = true
-) : GitInfoExtractor {
-
+        ) : GitInfoExtractor {
     val headCommit: Commit? = if (head == null) null else
         requireNotNull(commitInGraph(head)) { "head commit not in graph" }
 
@@ -56,14 +56,16 @@ open class MockGitRepo(
     override val commitsToHead: List<String> =
             if (headCommit == null) emptyList() else commitsUpTo(headCommit.sha1)
 
-    override fun commitsUpTo(rev: String): List<String> {
+    override fun commitsUpTo(rev: String, args: String): List<String> {
         val commit = commitInGraph(rev) ?: return emptyList()
         val history: MutableList<Commit> = mutableListOf(commit)
 
         while (true) {
             val parent = history.last().parentCommit()
             if (parent == null) {
-                return history.map { it.sha1 }
+                return history
+                        .filter { if (args.contains("--min-parents=2")) it.merge else true }
+                        .map { it.sha1 }
             } else {
                 history.add(parent)
             }
@@ -86,6 +88,9 @@ open class MockGitRepo(
         if (parent == null) return null
         return graph.find { it.sha1 == parent }
     }
+
+    override val mergeCommitsToHead: List<String>
+        get() = TODO("not implemented")
 }
 
 class GitInfoExtractorStub(
@@ -94,6 +99,8 @@ class GitInfoExtractorStub(
         override val localChanges: LocalChanges = NO_CHANGES,
         override val isGitProjectReady: Boolean = true
 ) : GitInfoExtractor {
+    override val mergeCommitsToHead: List<String>
+        get() = TODO("not implemented")
 
     override val initialCommitDate: Long
         get() = TODO("not implemented")
@@ -105,7 +112,7 @@ class GitInfoExtractorStub(
         TODO("not implemented")
     }
 
-    override fun commitsUpTo(rev: String): List<String> {
+    override fun commitsUpTo(rev: String, args: String): List<String> {
         TODO("not implemented")
     }
 
