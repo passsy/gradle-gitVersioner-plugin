@@ -56,7 +56,8 @@ open class MockGitRepo(
     override val commitsToHead: List<String> =
             if (headCommit == null) emptyList() else commitsUpTo(headCommit.sha1)
 
-    override fun commitsUpTo(rev: String): List<String> {
+
+    override fun commitsUpTo(rev: String, args: String): List<String> {
         val commit = commitInGraph(rev) ?: return emptyList()
         val history: MutableList<Commit> = mutableListOf(commit)
 
@@ -94,6 +95,9 @@ class GitInfoExtractorStub(
         override val localChanges: LocalChanges = NO_CHANGES,
         override val isGitProjectReady: Boolean = true
 ) : GitInfoExtractor {
+    override fun commitsUpTo(rev: String, args: String): List<String> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override val initialCommitDate: Long
         get() = TODO("not implemented")
@@ -102,10 +106,6 @@ class GitInfoExtractorStub(
         get() = TODO("not implemented")
 
     override fun commitDate(rev: String): Long {
-        TODO("not implemented")
-    }
-
-    override fun commitsUpTo(rev: String): List<String> {
         TODO("not implemented")
     }
 
