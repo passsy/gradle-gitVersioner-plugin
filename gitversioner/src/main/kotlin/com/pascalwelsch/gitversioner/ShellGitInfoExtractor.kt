@@ -12,7 +12,7 @@ interface GitInfoExtractor {
     val commitsToHead: List<String>
     val isGitProjectReady: Boolean
     fun commitDate(rev: String): Long
-    fun commitsUpTo(rev: String): List<String>
+    fun commitsUpTo(rev: String, args: String = ""): List<String>
 }
 
 /**
@@ -41,9 +41,11 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
     }
 
     override val initialCommitDate: Long by lazy {
-        val time = "git log --pretty=format:'%at' --max-parents=0".execute()
+        val initialCommit: String = commitsToHead.lastOrNull() ?: return@lazy 0L
+        val time = "git log $initialCommit -n 1 --pretty=format:'%at'".execute()
                 .text().replace("\'", "").trim()
-        return@lazy if (time.isEmpty()) 0 else time.toLong()
+
+        return@lazy if (time.isEmpty()) 0L else time.toLong()
     }
 
     override fun commitDate(rev: String): Long {
@@ -75,31 +77,36 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
         }
     }
 
-    override fun commitsUpTo(rev: String): List<String> {
-        var result = "git rev-list $rev".execute()
-        if (result.exitValue() != 0) {
-            result = "git rev-list origin/$rev".execute()
+    override fun commitsUpTo(rev: String, args: String): List<String> {
+        val cmd = "git rev-list $rev $args"
+
+        var lines: List<String>
+        var process = cmd.execute(waitFor = false)
+        try {
+            lines = process.inputStream.bufferedReader().readLines()
+        } catch (e: Exception) {
+            try {
+                process = "git rev-list origin/$rev $args".execute()
+                lines = process.inputStream.bufferedReader().readLines()
+            } catch (e: Exception) {
+                lines = emptyList()
+            }
         }
 
-        if (result.exitValue() != 0) {
-            return emptyList()
-        }
+        process.destroy()
 
-        val text = result.text().trim()
-        if (text.isEmpty()) {
-            return emptyList()
-        }
-
-        val list = text.lines().map { it.trim() }
+        val list = lines.map { it.trim() }
         return list
     }
 
     private fun Process.text(): String = ProcessGroovyMethods.getText(this)
 
-    private fun String.execute(): Process {
-        val status = ProcessGroovyMethods.execute(this, emptyArray<String>(), project.projectDir)
-        status.waitFor()
-        return status
+    private fun String.execute(waitFor: Boolean = true): Process {
+        val process = ProcessGroovyMethods.execute(this, emptyArray<String>(), project.projectDir)
+        if (waitFor) {
+            process.waitFor()
+        }
+        return process
     }
 }
 
