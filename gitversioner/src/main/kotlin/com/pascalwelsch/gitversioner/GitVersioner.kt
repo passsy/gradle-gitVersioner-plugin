@@ -38,7 +38,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
         logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                        "use the property GitVersioner.versionCode instead")
+                "use the property GitVersioner.versionCode instead")
         return versionCode
     }
 
@@ -61,7 +61,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
         logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                        "use the property GitVersioner.versionName instead")
+                "use the property GitVersioner.versionName instead")
         return versionName
     }
 
@@ -152,6 +152,10 @@ public open class GitVersioner internal constructor(
      * whether git can be used to extract data
      */
     public val isGitProjectCorrectlyInitialized: Boolean = gitInfoExtractor.isGitProjectCorrectlyInitialized
+
+    @Deprecated(message = "renamed", replaceWith = ReplaceWith("isGitProjectCorrectlyInitialized"))
+    public val isGitProjectReady
+        get() = isGitProjectCorrectlyInitialized
 
 
     public val isHistoryShallowed: Boolean = gitInfoExtractor.isHistoryShallowed
