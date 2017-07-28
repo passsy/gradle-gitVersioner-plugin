@@ -2,6 +2,7 @@ package com.pascalwelsch.gitversioner
 
 import org.codehaus.groovy.runtime.ProcessGroovyMethods
 import org.gradle.api.Project
+import java.io.File
 import java.util.Collections.emptyList
 
 interface GitInfoExtractor {
@@ -10,7 +11,8 @@ interface GitInfoExtractor {
     val localChanges: LocalChanges
     val initialCommitDate: Long
     val commitsToHead: List<String>
-    val isGitProjectReady: Boolean
+    val isGitProjectCorrectlyInitialized: Boolean
+    val isHistoryShallowed: Boolean
     fun commitDate(rev: String): Long
     fun commitsUpTo(rev: String, args: String = ""): List<String>
 }
@@ -21,19 +23,19 @@ interface GitInfoExtractor {
 internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
 
     override val currentSha1: String? by lazy {
-        if (!isGitProjectReady) return@lazy null
+        if (!isGitProjectCorrectlyInitialized) return@lazy null
         val sha1 = "git rev-parse HEAD".execute().text().trim()
         if (sha1.isEmpty()) null else sha1
     }
 
     override val currentBranch: String? by lazy {
-        if (!isGitProjectReady) return@lazy null
+        if (!isGitProjectCorrectlyInitialized) return@lazy null
         val branch = "git symbolic-ref --short -q HEAD".execute().text().trim()
         if (branch.isEmpty()) null else branch
     }
 
     override val localChanges: LocalChanges by lazy {
-        if (!isGitProjectReady) return@lazy NO_CHANGES
+        if (!isGitProjectCorrectlyInitialized) return@lazy NO_CHANGES
         val shortStat = "git diff HEAD --shortstat".execute().text().trim()
         if (shortStat.isEmpty()) return@lazy NO_CHANGES
 
@@ -56,25 +58,51 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
 
     override val commitsToHead: List<String> by lazy { commitsUpTo("HEAD") }
 
-    override val isGitProjectReady: Boolean by lazy {
+    override val isGitProjectCorrectlyInitialized: Boolean by lazy {
         val result = "git status".execute()
 
         when (result.exitValue()) {
-            0 -> true
+            0 -> {
+                // fine
+            }
             69 -> {
                 println("git returned with error 69\n" +
                         "If you are a mac user that message is telling you is that you need to open the " +
                         "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
                         "update, you need to accept the new license EULA agreement that’s part of the " +
                         "updated XCode.")
-                false
+                return@lazy false
             }
             else -> {
                 println("ERROR: can't generate a git version, this is not a git project")
                 println(" -> Not a git repository (or any of the parent directories): .git")
-                false
+                return@lazy false
             }
         }
+
+        if (isHistoryShallowed) {
+            return@lazy false
+        }
+
+        return@lazy true
+    }
+
+    override val isHistoryShallowed: Boolean by lazy {
+
+        // returns root dir of git
+        val rootPath = "git rev-parse --show-toplevel".execute().text().trim()
+        val shallowFile = File("$rootPath/.git/shallow")
+
+        if (shallowFile.exists()) {
+            println("WARNING: Git history is incomplete\n" +
+                    "The gradle git version plugin requires the complete git history to calculate " +
+                    "the version. The history is shallowed, therefore the version code would be incorrect.\n" +
+                    "Please fetch the complete history with:\n" +
+                    "\tgit fetch --unshallow")
+            return@lazy true
+        }
+
+        return@lazy false
     }
 
     override fun commitsUpTo(rev: String, args: String): List<String> {

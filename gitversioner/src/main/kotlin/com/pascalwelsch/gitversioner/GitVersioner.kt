@@ -47,7 +47,7 @@ public open class GitVersioner internal constructor(
      */
     public val versionCode: Int by lazy {
         var code = -1 // default, this is actually a valid android versionCode
-        if (gitInfoExtractor.isGitProjectReady) {
+        if (gitInfoExtractor.isGitProjectCorrectlyInitialized) {
             val commitComponent = baseBranchCommits.size
             code = commitComponent + timeComponent
         }
@@ -70,7 +70,7 @@ public open class GitVersioner internal constructor(
      */
     public val versionName: String by lazy {
         var name = "undefined"
-        if (gitInfoExtractor.isGitProjectReady) {
+        if (gitInfoExtractor.isGitProjectCorrectlyInitialized) {
             name = try {
                 formatter(this).toString()
             } catch (e: Throwable) {
@@ -86,14 +86,14 @@ public open class GitVersioner internal constructor(
      * the current local changes (files changed, additions, deletions). [NO_CHANGES] when no changes detected
      */
     public val localChanges: LocalChanges by lazy {
-        if (!gitInfoExtractor.isGitProjectReady) NO_CHANGES else gitInfoExtractor.localChanges
+        if (!gitInfoExtractor.isGitProjectCorrectlyInitialized) NO_CHANGES else gitInfoExtractor.localChanges
     }
 
     /**
      * the name of the branch HEAD is currently on
      */
     public val branchName: String? get() {
-        if (!gitInfoExtractor.isGitProjectReady) return null
+        if (!gitInfoExtractor.isGitProjectCorrectlyInitialized) return null
         return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
     }
 
@@ -128,7 +128,7 @@ public open class GitVersioner internal constructor(
      * [yearFactor] based time component from initial commit to [featureBranchOriginCommit]
      */
     public val timeComponent: Int by lazy {
-        if (!gitInfoExtractor.isGitProjectReady) return@lazy 0
+        if (!gitInfoExtractor.isGitProjectCorrectlyInitialized) return@lazy 0
         val latestBaseCommit = featureBranchOriginCommit ?: return@lazy 0
 
         val timeToHead = gitInfoExtractor.commitDate(
@@ -151,7 +151,10 @@ public open class GitVersioner internal constructor(
     /**
      * whether git can be used to extract data
      */
-    public val isGitInitialized: Boolean = gitInfoExtractor.isGitProjectReady
+    public val isGitProjectCorrectlyInitialized: Boolean = gitInfoExtractor.isGitProjectCorrectlyInitialized
+
+
+    public val isHistoryShallowed: Boolean = gitInfoExtractor.isHistoryShallowed
 
     /**
      * commits of base branch in history of current commit (HEAD).

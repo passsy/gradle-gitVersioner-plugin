@@ -25,7 +25,19 @@ public class GitVersionerPlugin : Plugin<Project> {
             doLast {
                 with(gitVersioner) {
 
-                    if (!gitVersioner.isGitInitialized) {
+                    if (!gitVersioner.isGitProjectCorrectlyInitialized) {
+
+                        val why = if (gitVersioner.isHistoryShallowed) {
+                            "WARNING: Git history is incomplete\n" +
+                                    "The gradle git version plugin requires the complete git history to calculate " +
+                                    "the version. The history is shallowed, therefore the version code would be incorrect.\n" +
+                                    "Please fetch the complete history with:\n" +
+                                    "\tgit fetch --unshallow"
+                        } else {
+                            "WARNING: git not initialized\n" +
+                                    "\tgit init"
+                        }
+
                         println("""
                         |
                         |GitVersioner Plugin
@@ -35,7 +47,7 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |baseBranch: $baseBranch
                         |
-                        |git not initialized
+                        |$why
                         """.replaceIndentByMargin())
                         return@doLast
                     }

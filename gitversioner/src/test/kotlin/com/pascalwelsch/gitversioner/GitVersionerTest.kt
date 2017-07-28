@@ -496,7 +496,7 @@ class GitVersionerTest {
 
     @Test
     fun `no git repo`() {
-        val git = MockGitRepo(isGitProjectReady = false) // git initialized but nothing commited
+        val git = MockGitRepo(isGitProjectCorrectlyInitialized = false) // git initialized but nothing commited
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->

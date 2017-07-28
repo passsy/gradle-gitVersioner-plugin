@@ -14,7 +14,8 @@ open class MockGitRepo(
         val head: String? = null,
         val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
         override val localChanges: LocalChanges = NO_CHANGES,
-        override val isGitProjectReady: Boolean = true
+        override val isGitProjectCorrectlyInitialized: Boolean = true,
+        override val isHistoryShallowed: Boolean = false
 ) : GitInfoExtractor {
 
     val headCommit: Commit? = if (head == null) null else
@@ -93,7 +94,8 @@ class GitInfoExtractorStub(
         override val currentSha1: String? = null,
         override val currentBranch: String? = null,
         override val localChanges: LocalChanges = NO_CHANGES,
-        override val isGitProjectReady: Boolean = true
+        override val isGitProjectCorrectlyInitialized: Boolean = true,
+        override val isHistoryShallowed: Boolean = false
 ) : GitInfoExtractor {
     override fun commitsUpTo(rev: String, args: String): List<String> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
