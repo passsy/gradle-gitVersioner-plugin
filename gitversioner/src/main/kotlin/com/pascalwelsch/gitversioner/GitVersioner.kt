@@ -154,7 +154,7 @@ public open class GitVersioner internal constructor(
     public val isGitProjectCorrectlyInitialized: Boolean = gitInfoExtractor.isGitProjectCorrectlyInitialized
 
     @Deprecated(message = "renamed", replaceWith = ReplaceWith("isGitProjectCorrectlyInitialized"))
-    public val isGitProjectReady
+    public val isGitInitialized
         get() = isGitProjectCorrectlyInitialized
 
 
