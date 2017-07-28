@@ -244,7 +244,7 @@ class GitVersionerTest {
             Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
-        val git = MockGitRepo(graph, "X", listOf("e" to "master", "X" to "orphan"))
+        val git = MockGitRepo(graph, "X", branchHeads = listOf("e" to "master", "X" to "orphan"))
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
@@ -299,7 +299,7 @@ class GitVersionerTest {
     }
 
     @Test
-    fun `one commit`() {
+    fun `first commit - no parent`() {
         val graph = listOf(
             Commit(sha1 = "X", parent = null, date = 150_006_000) // <-- master, HEAD
         )
@@ -501,7 +501,7 @@ class GitVersionerTest {
 
     @Test
     fun `no git repo`() {
-        val git = MockGitRepo(isGitProjectReady = false) // git initialized but nothing commited
+        val git = MockGitRepo(isGitWorking = false) // git initialized but nothing committed
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
@@ -545,7 +545,7 @@ class GitVersionerTest {
     fun `no commits - local changes`() {
 
         val localChanges = LocalChanges(3, 5, 7)
-        val git = MockGitRepo(localChanges = localChanges) // git initialized but nothing commited
+        val git = MockGitRepo(localChanges = localChanges) // git initialized but nothing committed
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
@@ -803,7 +803,7 @@ class GitVersionerTest {
     }
 
     @Test
-    fun `default - receice default branchname from ci`() {
+    fun `default - receive default branch name from ci`() {
         val graph = listOf(
             Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
             Commit(sha1 = "j", parent = "i", date = 150_009_000),

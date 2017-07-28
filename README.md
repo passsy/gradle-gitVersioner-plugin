@@ -23,7 +23,7 @@ versionName 2376-upgrade_gradle_4.4.1+3
 versionCode 2376
 ```
 
-While working on your features when you have uncommited changes `files changed: 1, additions(+): 2, deletions(-): 0`.
+While working on your features when you have uncommitted changes `files changed: 1, additions(+): 2, deletions(-): 0`.
 ```
 versionName 2376-upgrade_gradle_4.4.1+3-SNAPSHOT(1 +2 -0)
 versionCode 2376

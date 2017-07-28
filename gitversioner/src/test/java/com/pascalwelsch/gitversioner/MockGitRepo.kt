@@ -13,8 +13,9 @@ open class MockGitRepo(
     val graph: Collection<Commit> = emptyList(),
     val head: String? = null,
     val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
-    override val localChanges: LocalChanges = NO_CHANGES,
-    override val isGitProjectReady: Boolean = true
+    final override val localChanges: LocalChanges = NO_CHANGES,
+    final override val isHistoryShallowed: Boolean = false,
+    final override val isGitWorking: Boolean = true
 ) : GitInfoExtractor {
 
     val headCommit: Commit? = if (head == null) null else
@@ -24,13 +25,19 @@ open class MockGitRepo(
         graph.forEach { commit ->
             // orphan commits are valid
             if (commit.parent != null) {
-                // unknown parents are invalid
-                requireNotNull(commit.parentCommit()) { "parent commit not in graph" }
+                // allow unknown parents for shallow clones
+                if (!isHistoryShallowed) {
+                    // unknown parents are invalid
+                    requireNotNull(commit.parentCommit()) { "parent commit not in graph" }
+                }
             }
         }
 
         branchHeads.forEach { (sha1, name) ->
             requireNotNull(commitInGraph(sha1)) { "$sha1 ($name) not a commit in graph" }
+        }
+        if (isHistoryShallowed) {
+            require(graph.size <= 1) { "shallow clones only have one commit" }
         }
     }
 
@@ -92,7 +99,8 @@ class GitInfoExtractorStub(
     override val currentSha1: String? = null,
     override val currentBranch: String? = null,
     override val localChanges: LocalChanges = NO_CHANGES,
-    override val isGitProjectReady: Boolean = true
+    override val isGitWorking: Boolean = true,
+    override val isHistoryShallowed: Boolean = false
 ) : GitInfoExtractor {
 
     override fun commitsUpTo(rev: String, args: String): List<String> {

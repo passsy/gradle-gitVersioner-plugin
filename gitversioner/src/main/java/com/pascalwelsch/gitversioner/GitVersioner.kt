@@ -48,13 +48,18 @@ public open class GitVersioner internal constructor(
      * base branch commit count + [timeComponent]
      */
     public val versionCode: Int by lazy {
-        var code = 1
-        if (gitInfoExtractor.isGitProjectReady) {
+        try {
+            requireWorkingGit()
+            requireWorkingHistory()
             val commitComponent = baseBranchCommits.size
-            code = commitComponent + timeComponent
+            val code = commitComponent + timeComponent
+            logger?.debug("git versionCode: $code")
+            return@lazy code
+        } catch (e: Throwable) {
+            // fallback
+            // must be a positive number for android projects
+            return@lazy 1
         }
-        logger?.debug("git versionCode: $code")
-        return@lazy code
     }
 
     /**
@@ -73,24 +78,33 @@ public open class GitVersioner internal constructor(
      * string representation powered by [formatter]
      */
     public val versionName: String by lazy {
-        var name = "undefined"
-        if (gitInfoExtractor.isGitProjectReady) {
-            name = try {
+        try {
+            requireWorkingGit()
+            val name = try {
                 formatter(this).toString()
             } catch (e: Throwable) {
                 logger?.info("formatter failed to generate a correct name, using default formatter")
                 DEFAULT_FORMATTER(this).toString()
             }
             logger?.debug("git versionName: $name")
+            return@lazy name
+        } catch (e: Throwable) {
+            // fallback
+            // Can't be null for android projects
+            return@lazy "undefined"
         }
-        return@lazy name
     }
 
     /**
      * the current local changes (files changed, additions, deletions). [NO_CHANGES] when no changes detected
      */
     public val localChanges: LocalChanges by lazy {
-        if (!gitInfoExtractor.isGitProjectReady) NO_CHANGES else gitInfoExtractor.localChanges
+        try {
+            requireWorkingGit()
+            return@lazy gitInfoExtractor.localChanges
+        } catch (e: Throwable) {
+            return@lazy NO_CHANGES
+        }
     }
 
     /**
@@ -98,19 +112,38 @@ public open class GitVersioner internal constructor(
      */
     public val branchName: String?
         get() {
-            if (!gitInfoExtractor.isGitProjectReady) return null
-            return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
+            return try {
+                gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
+            } catch (e: Throwable) {
+                null
+            }
         }
 
     /**
      * all commits in [baseBranch] without the [featureBranchCommits]
      */
-    public val baseBranchCommitCount: Int by lazy { baseBranchCommits.count() }
+    public val baseBranchCommitCount: Int by lazy {
+        try {
+            requireWorkingGit()
+            requireWorkingHistory()
+            return@lazy baseBranchCommits.count()
+        } catch (e: Throwable) {
+            return@lazy 0
+        }
+    }
 
     /**
      * commits on feature branch not in [baseBranch]
      */
-    public val featureBranchCommitCount: Int by lazy { featureBranchCommits.count() }
+    public val featureBranchCommitCount: Int by lazy {
+        try {
+            requireWorkingGit()
+            requireWorkingHistory()
+            return@lazy featureBranchCommits.count()
+        } catch (e: Throwable) {
+            return@lazy 0
+        }
+    }
 
     /**
      * all commits together, from initial commit to HEAD
@@ -122,24 +155,35 @@ public open class GitVersioner internal constructor(
      *
      * @see [currentSha1Short]
      */
-    public val currentSha1: String? by lazy { gitInfoExtractor.currentSha1 }
+    public val currentSha1: String? by lazy {
+        try {
+            requireWorkingGit()
+            return@lazy gitInfoExtractor.currentSha1
+        } catch (e: Throwable) {
+            return@lazy null
+        }
+    }
 
     /**
      * 7 char sha1 of current commit
      */
-    public val currentSha1Short: String? by lazy { gitInfoExtractor.currentSha1?.take(7) }
+    public val currentSha1Short: String? by lazy { currentSha1?.take(7) }
 
     /**
      * [yearFactor] based time component from initial commit to [featureBranchOriginCommit]
      */
     public val timeComponent: Int by lazy {
-        if (!gitInfoExtractor.isGitProjectReady) return@lazy 0
-        val latestBaseCommit = featureBranchOriginCommit ?: return@lazy 0
+        try {
+            requireWorkingGit()
+            requireWorkingHistory()
+            val latestBaseCommit = featureBranchOriginCommit ?: return@lazy 0
 
-        val timeToHead = gitInfoExtractor.commitDate(
-            latestBaseCommit
-        ) - gitInfoExtractor.initialCommitDate
-        return@lazy (timeToHead * yearFactor / YEAR_IN_SECONDS + 0.5).toInt()
+            val timeToHead = gitInfoExtractor.commitDate(latestBaseCommit) - gitInfoExtractor.initialCommitDate
+            return@lazy (timeToHead * yearFactor / YEAR_IN_SECONDS + 0.5).toInt()
+        } catch (e: Throwable) {
+            // fallback
+            return@lazy 0
+        }
     }
 
     /**
@@ -152,28 +196,61 @@ public open class GitVersioner internal constructor(
     /**
      * sha1 of the initial commit of the git tree, first commit
      */
-    public val initialCommit: String? by lazy { gitInfoExtractor.commitsToHead.lastOrNull() }
+    public val initialCommit: String? by lazy {
+        try {
+            requireWorkingGit()
+            requireWorkingHistory()
+            gitInfoExtractor.commitsToHead.lastOrNull()
+        } catch (e: Throwable) {
+            return@lazy null
+        }
+    }
 
     /**
      * whether git can be used to extract data
      */
-    public val isGitInitialized: Boolean = gitInfoExtractor.isGitProjectReady
+    public val isGitProjectCorrectlyInitialized: Boolean = gitInfoExtractor.isGitWorking
+
+    @Suppress("unused")
+    @Deprecated(message = "renamed", replaceWith = ReplaceWith("isGitProjectCorrectlyInitialized"))
+    public val isGitInitialized
+        get() = isGitProjectCorrectlyInitialized
+
+    public val isHistoryShallowed: Boolean = gitInfoExtractor.isHistoryShallowed
 
     /**
      * commits of base branch in history of current commit (HEAD).
      */
     private val baseBranchCommits: List<String> by lazy {
-        val baseCommits = gitInfoExtractor.commitsUpTo(baseBranch)
-        val headCommits = gitInfoExtractor.commitsToHead
+        try {
+            val baseCommits = gitInfoExtractor.commitsUpTo(baseBranch)
+            val headCommits = gitInfoExtractor.commitsToHead
 
-        baseCommits.filter { it in headCommits }
+            return@lazy baseCommits.filter { it in headCommits }
+        } catch (e: Throwable) {
+            return@lazy emptyList<String>()
+        }
     }
 
     /**
      * commits on the feature branch not merged into [baseBranch]
      */
     private val featureBranchCommits: List<String> by lazy {
-        gitInfoExtractor.commitsToHead.filter { !baseBranchCommits.contains(it) }
+        try {
+            return@lazy gitInfoExtractor.commitsToHead.filter { !baseBranchCommits.contains(it) }
+        } catch (e: Throwable) {
+            return@lazy emptyList<String>()
+        }
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun requireWorkingGit() {
+        if (!gitInfoExtractor.isGitWorking) throw IllegalStateException("Git is not working as expected. See logs for details")
+    }
+
+    @Suppress("NOTHING_TO_INLINE")
+    private inline fun requireWorkingHistory() {
+        if (gitInfoExtractor.isHistoryShallowed) throw IllegalStateException("Shallow clone detected, no history available to execute action")
     }
 
     companion object {
@@ -181,9 +258,9 @@ public open class GitVersioner internal constructor(
         @JvmStatic
         public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
             with(versioner) {
-                val sb = StringBuilder(versioner.versionCode.toString())
+                val sb = StringBuilder(if(isHistoryShallowed) "shallowed" else versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
-                if (baseBranch != branchName && hasCommits) {
+                if (baseBranch != branchName && (hasCommits || isHistoryShallowed)) {
                     // add branch identifier for
                     val shortName = try {
                         shortNameFormatter(versioner)
@@ -196,7 +273,7 @@ public open class GitVersioner internal constructor(
                 }
 
                 val featureCount = featureBranchCommits.count()
-                if (featureCount > 0) {
+                if (featureCount > 0 && !isHistoryShallowed) {
                     sb.append("+").append(featureCount)
                 }
                 if (localChanges != NO_CHANGES) {
