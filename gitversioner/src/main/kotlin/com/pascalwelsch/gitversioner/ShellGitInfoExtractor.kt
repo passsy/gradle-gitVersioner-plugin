@@ -66,7 +66,9 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
                         "If you are a mac user that message is telling you is that you need to open the " +
                         "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
                         "update, you need to accept the new license EULA agreement that’s part of the " +
-                        "updated XCode.")
+                        "updated XCode.\n\n" +
+                        "tl;dr run\n" +
+                        "\txcode-select --install")
                 false
             }
             else -> {
