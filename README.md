@@ -8,6 +8,27 @@ This is not possible in git because branching is so common (and that's a good th
 Not even the latest common commit in history is clear.
 This projects aims to bring the SVN simplicity and more back to git for your gradle (android) project.
 
+## Example
+
+On `master` branch with `1850` commits and roughly half a year of development (`526` timecomponent)
+```
+versionName 2376
+versionCode 2376
+```
+
+On your feature branch `feature/upgrade_gradle_4.4.1` with `3` additional commits/
+`versionCode` stays the same and only reflects the base version on the baseBranch (`master`).
+```
+versionName 2376-upgrade_gradle_4.4.1+3
+versionCode 2376
+```
+
+While working on your features when you have uncommited changes `files changed: 1, additions(+): 2, deletions(-): 0`.
+```
+versionName 2376-upgrade_gradle_4.4.1+3-SNAPSHOT(1 +2 -0)
+versionCode 2376
+```
+
 ## Install
 
 ```gradle
