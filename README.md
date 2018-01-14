@@ -60,6 +60,52 @@ gitVersioner {
 
 ```
 
+## Gradle Tasks
+
+### Show version output info
+```
+> ./gradlew gitVersion
+
+GitVersioner Plugin
+-------------------
+VersionCode: 2118
+VersionName: 2118-SNAPSHOT(1 +9 -8)
+
+baseBranch: develop
+current branch: develop
+current commit: 1dd547a
+
+baseBranch commits: 1653 (423e113..1dd547a)
+featureBranch commits: 0 (1dd547a..1dd547a)
+
+timeComponent: 465 (yearFactor:1000)
+
+LocalChanges: files changed: 1, additions(+): 9, deletions(-): 8
+```
+
+### write gitVersion information properties file (machine readable)
+
+```
+> ./gradlew generateGitVersionName
+git versionName: 2118-SNAPSHOT(1 +9 -8)
+gitVersion output: build/gitversion/gitversion.properties
+```
+
+`gitversion.properties`
+```
+#gitVersioner plugin - extracted data from git repository
+#Sun Jan 14 22:08:34 CET 2018
+localChanges=1 +9 -8
+timeComponent=465
+versionName=2118-SNAPSHOT(1 +9 -8)
+versionCode=2118
+featureBranchCommitCount=0
+baseBranchCommitCount=1653
+baseBranch=develop
+branchName=develop
+yearFactor=1000
+currentSha1=1dd547a910b1a1da64fd65ec4b4294030511be4b
+```
 
 
 # License
