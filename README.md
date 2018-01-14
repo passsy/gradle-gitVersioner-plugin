@@ -18,14 +18,14 @@ buildscript {
     }
 }
 
+// https://github.com/passsy/gradle-gitVersioner-plugin
 apply plugin: 'com.pascalwelsch.gitversioner'
-
 gitVersioner {
-    baseBranch "develop"
-    //TODO add more
+    baseBranch 'develop'
 }
 ```
 
+## Usage Android
 
 ```gradle
 // app module build.gradle
@@ -38,6 +38,29 @@ android {
     }
 }
 ```
+
+## Additional gitVersioner properties
+
+Here are the default properties, you can change them. See [here](https://github.com/passsy/gradle-gitVersioner-plugin/blob/master/gitversioner/src/main/kotlin/com/pascalwelsch/gitversioner/GitVersioner.kt) for more details
+
+```gradle 
+gitVersioner {
+    baseBranch 'master'
+    yearFactor 1000 // increasing every 8.57h
+    
+    // Default formatter properties
+    addSnapshot true // the "-SNAPSHOT" postfix
+    addLocalChangesDetails true
+    
+    // provide a custom formatter
+    formatter = { gitVersioner ->
+        return "${gitVersioner.versionCode} custom generated id"
+    }
+}
+
+```
+
+
 
 # License
 
