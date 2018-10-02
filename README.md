@@ -70,9 +70,12 @@ gitVersioner {
     yearFactor 1000 // increasing every 8.57h
     
     // Default formatter properties
-    addSnapshot true // the "-SNAPSHOT" postfix
-    addLocalChangesDetails true
-    
+    addSnapshot true                    // the "-SNAPSHOT" postfix
+    addLocalChangesDetails true         // counts of uncommitted, comitted but not push'd, etc: (1 +4 -3)
+    addFeatureBranchCommitCount false   //  omit the "+__"/master counter
+    addTimestamp true                   //  add "-$seconds_epoch"
+    semVerSafe   true                   //  replace anything but [^a-zA-Z0-9-] with "-", for interop with tools like NPM
+
     // provide a custom formatter
     formatter = { gitVersioner ->
         return "${gitVersioner.versionCode} custom generated id"
