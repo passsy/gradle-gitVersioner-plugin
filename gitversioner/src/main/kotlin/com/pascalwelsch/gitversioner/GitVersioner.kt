@@ -18,9 +18,10 @@ public open class GitVersioner internal constructor(
     public var yearFactor: Int = 1000
 
     public var addSnapshot: Boolean = true
-    public var addFeatureBranchCommitCount: Boolean = true
     public var addLocalChangesDetails: Boolean = true
+    public var addFeatureBranchCommitCount: Boolean = true
     public var addTimestamp: Boolean = false
+    public var semVerSafe: Boolean = false
 
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
 
@@ -211,12 +212,12 @@ public open class GitVersioner internal constructor(
                     sb.append("-${System.currentTimeMillis() / 1000}")
                 }
 
-                sb.toString()
-//                        .let {
-//                            when (makeSemVerCompliant) {
-//                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
-//                        false -> it
-//                    }
+                sb.toString().let {
+                    when (semVerSafe) {
+                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                        false -> it
+                    }
+                }
             }
         }
 
