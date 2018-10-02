@@ -21,7 +21,6 @@ public open class GitVersioner internal constructor(
     public var addFeatureBranchCommitCount: Boolean = true
     public var addLocalChangesDetails: Boolean = true
     public var addTimestamp: Boolean = false
-    public var makeSemVerCompliant: Boolean = false
 
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
 
@@ -212,12 +211,12 @@ public open class GitVersioner internal constructor(
                     sb.append("-${System.currentTimeMillis() / 1000}")
                 }
 
-                sb.toString().let {
-                    when (makeSemVerCompliant) {
-                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
-                        false -> it
-                    }
-                }
+                sb.toString()
+//                        .let {
+//                            when (makeSemVerCompliant) {
+//                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
+//                        false -> it
+//                    }
             }
         }
 
@@ -248,15 +247,12 @@ public open class GitVersioner internal constructor(
 public data class LocalChanges(
         val filesChanged: Int = 0,
         val additions: Int = 0,
-        val deletions: Int = 0
-) {
+        val deletions: Int = 0) {
     override fun toString(): String {
         return "$filesChanged +$additions -$deletions"
     }
 
-    fun shortStats(): String = if (filesChanged + additions + deletions == 0) {
-        "no changes"
-    } else {
-        "files changed: $filesChanged, additions(+): $additions, deletions(-): $deletions"
-    }
+    fun shortStats(): String =
+            if (filesChanged + additions + deletions == 0) "no changes"
+            else "files changed: $filesChanged, additions(+): $additions, deletions(-): $deletions"
 }
