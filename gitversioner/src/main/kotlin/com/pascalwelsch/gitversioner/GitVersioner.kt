@@ -158,13 +158,9 @@ public open class GitVersioner internal constructor(
      */
     private val baseBranchCommits: List<String> by lazy {
         val baseCommits = gitInfoExtractor.commitsUpTo(baseBranch)
-        baseCommits.forEach { baseCommit ->
-            if (gitInfoExtractor.commitsToHead.contains(baseCommit)) {
-                return@lazy baseCommits
-            }
-        }
+        val headCommits = gitInfoExtractor.commitsToHead
 
-        return@lazy emptyList<String>()
+        baseCommits.filter { it in headCommits }
     }
 
     /**
