@@ -11,16 +11,17 @@ public val NO_CHANGES = LocalChanges(0, 0, 0)
 
 public open class GitVersioner internal constructor(
         private val gitInfoExtractor: GitInfoExtractor,
-        private val logger: Logger? = null
-) {
+        private val logger: Logger? = null) {
 
     public var baseBranch: String = "master"
 
     public var yearFactor: Int = 1000
 
     public var addSnapshot: Boolean = true
-
     public var addLocalChangesDetails: Boolean = true
+    public var addFeatureBranchCommitCount: Boolean = true
+    public var addTimestamp: Boolean = false
+    public var semVerSafe: Boolean = false
 
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
 
@@ -38,7 +39,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
         logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                        "use the property GitVersioner.versionCode instead")
+                "use the property GitVersioner.versionCode instead")
         return versionCode
     }
 
@@ -61,7 +62,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
         logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                        "use the property GitVersioner.versionName instead")
+                "use the property GitVersioner.versionName instead")
         return versionName
     }
 
@@ -92,10 +93,11 @@ public open class GitVersioner internal constructor(
     /**
      * the name of the branch HEAD is currently on
      */
-    public val branchName: String? get() {
-        if (!gitInfoExtractor.isGitProjectReady) return null
-        return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
-    }
+    public val branchName: String?
+        get() {
+            if (!gitInfoExtractor.isGitProjectReady) return null
+            return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
+        }
 
     /**
      * all commits in [baseBranch] without the [featureBranchCommits]
@@ -177,7 +179,8 @@ public open class GitVersioner internal constructor(
             with(versioner) {
                 val sb = StringBuilder(versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
-                if (baseBranch != branchName && hasCommits) {
+                val isFeatureBranch = baseBranch != branchName
+                if (isFeatureBranch && hasCommits) {
                     // add branch identifier for
                     val shortName = try {
                         shortNameFormatter(versioner)
@@ -186,22 +189,31 @@ public open class GitVersioner internal constructor(
                         DEFAULT_SHORT_NAME_FORMATTER(versioner).toString()
                     }
 
-                    sb.append("-").append(shortName)
+                    sb.append("-$shortName")
                 }
 
                 val featureCount = featureBranchCommits.count()
-                if (featureCount > 0) {
-                    sb.append("+").append(featureCount)
+                if (featureCount > 0 && addFeatureBranchCommitCount) {
+                    sb.append("+$featureCount")
                 }
                 if (localChanges != NO_CHANGES) {
                     if (addSnapshot) {
                         sb.append("-SNAPSHOT")
                     }
                     if (addLocalChangesDetails) {
-                        sb.append("(").append(localChanges).append(")")
+                        sb.append("($localChanges)")
                     }
                 }
-                sb.toString()
+                if (isFeatureBranch && addTimestamp) {
+                    sb.append("-${System.currentTimeMillis() / 1000}")
+                }
+
+                sb.toString().let {
+                    when (semVerSafe) {
+                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                        false -> it
+                    }
+                }
             }
         }
 
@@ -232,15 +244,12 @@ public open class GitVersioner internal constructor(
 public data class LocalChanges(
         val filesChanged: Int = 0,
         val additions: Int = 0,
-        val deletions: Int = 0
-) {
+        val deletions: Int = 0) {
     override fun toString(): String {
         return "$filesChanged +$additions -$deletions"
     }
 
-    fun shortStats(): String = if (filesChanged + additions + deletions == 0) {
-        "no changes"
-    } else {
-        "files changed: $filesChanged, additions(+): $additions, deletions(-): $deletions"
-    }
+    fun shortStats(): String =
+            if (filesChanged + additions + deletions == 0) "no changes"
+            else "files changed: $filesChanged, additions(+): $additions, deletions(-): $deletions"
 }
