@@ -3,38 +3,98 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
     }
     repositories {
+        jcenter()
         mavenCentral()
     }
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 group = 'com.pascalwelsch.gitversioner'
-version = '0.3.1'
+version = '0.4.0-test'
 
 dependencies {
     compile gradleApi()
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.8.0'
-    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
+    testCompile 'org.assertj:assertj-core:3.11.1'
+    testCompile "com.nhaarman:mockito-kotlin:1.6.0"
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+}
+repositories {
+    jcenter()
 }
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
 
-publish {
-    userOrg = 'passsy'
-    groupId = project.group
-    artifactId = 'gitversioner'
-    publishVersion = project.version
-    website = 'https://github.com/passsy/gradle-gitVersioner-plugin'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = 'gitversioner'
+            version = project.version
+
+            pom {
+                url = 'https://github.com/passsy/gradle-gitVersioner-plugin'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'passsy'
+                        name = 'Pascal Welsch'
+                        email = 'pascal.welsch@gmail.com'
+                        url = 'https://github.com/passsy'
+                    }
+                }
+
+                scm {
+                    url = 'https://github.com/passsy/gradle-gitVersioner-plugin'
+                }
+            }
+
+            from components.java
+        }
+    }
+
+    repositories {
+        mavenLocal()
+    }
+}
+
+def bintrayUser = properties.get('BINTRAY_USER') as String
+def bintrayKey = properties.get('BINTRAY_KEY') as String
+
+// ./gradlew bintrayUpload
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['maven']
+    publish = true
+    //dryRun = true
+
+    pkg {
+        repo = 'maven'
+        name = 'gitversioner'
+        userOrg = 'passsy'
+        websiteUrl = 'https://github.com/passsy/gradle-gitVersioner-plugin'
+        issueTrackerUrl = 'https://github.com/passsy/gradle-gitVersioner-plugin/issues'
+        vcsUrl = 'https://github.com/passsy/gradle-gitVersioner-plugin.git'
+        licenses = ['Apache-2.0']
+        version {
+            name = project.version
+        }
+    }
 }
