@@ -28,8 +28,14 @@ internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtr
 
     override val currentBranch: String? by lazy {
         if (!isGitProjectReady) return@lazy null
-        val branch = "git symbolic-ref --short -q HEAD".execute().throwOnError().text.trim()
-        if (branch.isEmpty()) null else branch
+        val result = "git symbolic-ref --short -q HEAD".execute()
+        when (result) {
+            is ProcessResult.Success -> {
+                val branch = result.text.trim()
+                if (branch.isEmpty()) null else branch
+            }
+            is ProcessResult.Error -> null
+        }
     }
 
     override val localChanges: LocalChanges by lazy {
