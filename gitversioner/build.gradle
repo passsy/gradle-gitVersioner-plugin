@@ -3,38 +3,62 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "guru.stefma.androidartifacts:androidartifacts:1.3.0"
+        classpath "guru.stefma.bintrayrelease:bintrayrelease:1.1.1"
     }
     repositories {
+        google()
+        jcenter()
         mavenCentral()
     }
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: "guru.stefma.artifacts"
 
 group = 'com.pascalwelsch.gitversioner'
-version = '0.3.1'
+version = '0.4.0'
 
 dependencies {
     compile gradleApi()
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     testCompile 'junit:junit:4.12'
-    testCompile 'org.assertj:assertj-core:3.8.0'
-    testCompile "com.nhaarman:mockito-kotlin:1.5.0"
+    testCompile 'org.assertj:assertj-core:3.11.1'
+    testCompile "com.nhaarman:mockito-kotlin:1.6.0"
+    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+}
+repositories {
+    jcenter()
 }
 
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
 }
 
+javaArtifact {
+    artifactId = 'gitversioner'
+    name = "Gitversioner gradle plugin"
+    url = 'https://github.com/passsy/gradle-gitVersioner-plugin'
+    license {
+        name = "Apache License, Version 2.0"
+        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+    }
+    pom {
+        developers {
+            developer {
+                id = "passsy"
+                name = "Pascal Welsch"
+                url = 'https://github.com/passsy'
+            }
+        }
+    }
+}
+
+// ./gradlew clean build bintrayUpload
+apply plugin: "guru.stefma.bintrayrelease"
 publish {
     userOrg = 'passsy'
-    groupId = project.group
-    artifactId = 'gitversioner'
-    publishVersion = project.version
+    desc = "Extracts a useful versionCode and versionName from git history"
     website = 'https://github.com/passsy/gradle-gitVersioner-plugin'
 }
