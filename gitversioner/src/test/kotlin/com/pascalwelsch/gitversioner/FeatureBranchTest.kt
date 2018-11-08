@@ -1,10 +1,9 @@
 package com.pascalwelsch.gitversioner
 
 import org.assertj.core.api.SoftAssertions
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
-
+import org.junit.*
+import org.junit.runner.*
+import org.junit.runners.*
 
 @RunWith(JUnit4::class)
 class FeatureBranchTest {
@@ -328,6 +327,4 @@ class FeatureBranchTest {
             softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo("e")
         }
     }
-
-
 }

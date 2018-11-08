@@ -18,7 +18,7 @@ interface GitInfoExtractor {
 /**
  * Executes shell commands to get information from git
  */
-internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
+internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtractor {
 
     override val currentSha1: String? by lazy {
         if (!isGitProjectReady) return@lazy null
@@ -119,7 +119,6 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
         }
     }
 
-
     private sealed class ProcessResult {
         class Success(val text: String) : ProcessResult()
         class Error(val text: String, val errorCode: Int, val command: String) : ProcessResult() {
@@ -134,7 +133,6 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
         }
     }
 }
-
 
 /**
  * parses `git diff --shortstat`

@@ -30,8 +30,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode}
-                        |VersionName: ${versionName}
+                        |VersionCode: $versionCode
+                        |VersionName: $versionName
                         |
                         |baseBranch: $baseBranch
                         |
@@ -39,7 +39,6 @@ public class GitVersionerPlugin : Plugin<Project> {
                         """.replaceIndentByMargin())
                         return@doLast
                     }
-
 
                     val baseBranchRange = (initialCommit?.take(7) ?: "") +
                             "..${featureBranchOriginCommit?.take(7) ?: ""}"
@@ -51,8 +50,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode}
-                        |VersionName: ${versionName}
+                        |VersionCode: $versionCode
+                        |VersionName: $versionName
                         |
                         |baseBranch: $baseBranch
                         |current branch: $branchName
@@ -76,6 +75,5 @@ public class GitVersionerPlugin : Plugin<Project> {
             group = "Build"
             description = "analyzes the git history and creates a version name (generates machine readable output file)"
         }
-
     }
 }

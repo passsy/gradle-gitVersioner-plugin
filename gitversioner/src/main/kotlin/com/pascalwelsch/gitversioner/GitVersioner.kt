@@ -38,7 +38,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
         logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                        "use the property GitVersioner.versionCode instead")
+                "use the property GitVersioner.versionCode instead")
         return versionCode
     }
 
@@ -61,7 +61,7 @@ public open class GitVersioner internal constructor(
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
         logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                        "use the property GitVersioner.versionName instead")
+                "use the property GitVersioner.versionName instead")
         return versionName
     }
 
@@ -92,10 +92,11 @@ public open class GitVersioner internal constructor(
     /**
      * the name of the branch HEAD is currently on
      */
-    public val branchName: String? get() {
-        if (!gitInfoExtractor.isGitProjectReady) return null
-        return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
-    }
+    public val branchName: String?
+        get() {
+            if (!gitInfoExtractor.isGitProjectReady) return null
+            return gitInfoExtractor.currentBranch ?: ciBranchNameProvider()?.toString()
+        }
 
     /**
      * all commits in [baseBranch] without the [featureBranchCommits]
@@ -234,6 +235,7 @@ public data class LocalChanges(
         val additions: Int = 0,
         val deletions: Int = 0
 ) {
+
     override fun toString(): String {
         return "$filesChanged +$additions -$deletions"
     }

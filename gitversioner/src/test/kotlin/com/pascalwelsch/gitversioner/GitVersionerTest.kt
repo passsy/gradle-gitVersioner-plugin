@@ -1,12 +1,11 @@
 package com.pascalwelsch.gitversioner
 
-import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.*
 import org.assertj.core.api.SoftAssertions.assertSoftly
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.junit.*
+import org.junit.runner.*
+import org.junit.runners.*
 import java.util.concurrent.TimeUnit
-
 
 @RunWith(JUnit4::class)
 class GitVersionerTest {
@@ -765,7 +764,7 @@ class GitVersionerTest {
                 Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
-        val git = object: MockGitRepo(graph, "X", listOf("X" to "master")) {
+        val git = object : MockGitRepo(graph, "X", listOf("X" to "master")) {
             // explicitly checked out sha1 not branch
             override val currentBranch: String? = null
         }
@@ -803,7 +802,7 @@ class GitVersionerTest {
                 Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
-        val git = object: MockGitRepo(graph, "X", listOf("X" to "master")) {
+        val git = object : MockGitRepo(graph, "X", listOf("X" to "master")) {
             // explicitly checked out sha1 not branch
             override val currentBranch: String? = null
         }

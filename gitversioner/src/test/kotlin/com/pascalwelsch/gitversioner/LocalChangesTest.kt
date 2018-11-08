@@ -1,9 +1,9 @@
 package com.pascalwelsch.gitversioner
 
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.assertj.core.api.Assertions.*
+import org.junit.*
+import org.junit.runner.*
+import org.junit.runners.*
 
 @RunWith(JUnit4::class)
 class LocalChangesTest {
