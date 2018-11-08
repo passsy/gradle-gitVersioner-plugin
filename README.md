@@ -35,7 +35,7 @@ versionCode 2376
 // Top-level build.gradle
 buildscript {
     dependencies {
-        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.3.1'
+        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.4.0'
     }
 }
 

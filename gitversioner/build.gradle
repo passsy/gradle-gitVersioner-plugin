@@ -55,7 +55,7 @@ javaArtifact {
     }
 }
 
-// ./gradlew clean build bintrayUpload
+// ./gradlew bintrayUpload
 apply plugin: "guru.stefma.bintrayrelease"
 publish {
     userOrg = 'passsy'
