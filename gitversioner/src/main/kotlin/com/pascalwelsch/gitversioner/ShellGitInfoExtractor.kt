@@ -99,7 +99,7 @@ internal class ShellGitInfoExtractor(val project: Project) : GitInfoExtractor {
         return text.lines().asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList()
     }
 
-    private fun String.execute(): ProcessResult = split(" ").execute()
+    private fun String.execute(): ProcessResult = trim().split(" ").execute()
 
     private fun List<String>.execute(): ProcessResult {
         val out = ByteArrayOutputStream()
