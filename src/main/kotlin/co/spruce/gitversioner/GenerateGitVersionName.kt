@@ -1,10 +1,12 @@
-package com.pascalwelsch.gitversioner
+@file:Suppress("unused")
+
+package co.spruce.gitversioner
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import java.util.*
 
-open internal class GenerateGitVersionName : DefaultTask() {
+internal open class GenerateGitVersionName : DefaultTask() {
 
     internal lateinit var gitVersioner: GitVersioner
 

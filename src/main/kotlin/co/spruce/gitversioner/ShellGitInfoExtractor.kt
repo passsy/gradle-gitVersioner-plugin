@@ -1,4 +1,4 @@
-package com.pascalwelsch.gitversioner
+package co.spruce.gitversioner
 
 import org.codehaus.groovy.runtime.ProcessGroovyMethods
 import org.gradle.api.Project

@@ -1,1 +1,1 @@
-include ':gitversioner'
+rootProject.name = 'gitversioner'

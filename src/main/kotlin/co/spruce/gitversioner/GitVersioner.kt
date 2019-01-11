@@ -1,6 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier")
 
-package com.pascalwelsch.gitversioner
+package co.spruce.gitversioner
 
 import org.gradle.api.logging.Logger
 import java.util.concurrent.TimeUnit
@@ -14,18 +14,10 @@ public open class GitVersioner internal constructor(
         private val logger: Logger? = null) {
 
     public var baseBranch: String = "master"
-
     public var yearFactor: Int = 1000
 
-    public var addSnapshot: Boolean = true
-    public var addLocalChangesDetails: Boolean = true
-    public var addFeatureBranchCommitCount: Boolean = true
-    public var addTimestamp: Boolean = false
-    public var semVerSafe: Boolean = false
 
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
-
-    public var shortNameFormatter: ((GitVersioner) -> CharSequence) = DEFAULT_SHORT_NAME_FORMATTER
 
     public var ciBranchNameProvider: () -> CharSequence? = {
         // get branch name on jenkins
@@ -110,11 +102,6 @@ public open class GitVersioner internal constructor(
     public val featureBranchCommitCount: Int by lazy { featureBranchCommits.count() }
 
     /**
-     * all commits together, from initial commit to HEAD
-     */
-    public val commitCount: Int by lazy { baseBranchCommitCount + featureBranchCommitCount }
-
-    /**
      * full sha1 of current commit
      *
      * @see [currentSha1Short]
@@ -184,64 +171,15 @@ public open class GitVersioner internal constructor(
                 val sb = StringBuilder(versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
                 val isFeatureBranch = baseBranch != branchName
-                if (isFeatureBranch && hasCommits) {
-                    // add branch identifier for
-                    val shortName = try {
-                        shortNameFormatter(versioner)
-                    } catch (e: Throwable) {
-                        println("shortNameFormatter failed to generate a correct name, using default formatter")
-                        DEFAULT_SHORT_NAME_FORMATTER(versioner).toString()
-                    }
+                if (isFeatureBranch && hasCommits)
+                    sb.append("-${branchName ?: "undefined"}")
+                if (localChanges != NO_CHANGES)
+                    sb.append("-SNAPSHOT-${System.currentTimeMillis() / 1000}")
 
-                    sb.append("-$shortName")
-                }
-
-                val featureCount = featureBranchCommits.count()
-                if (featureCount > 0 && addFeatureBranchCommitCount) {
-                    sb.append("+$featureCount")
-                }
-                if (localChanges != NO_CHANGES) {
-                    if (addSnapshot) {
-                        sb.append("-SNAPSHOT")
-                    }
-                    if (addLocalChangesDetails) {
-                        sb.append("($localChanges)")
-                    }
-                }
-                if (isFeatureBranch && addTimestamp) {
-                    sb.append("-${System.currentTimeMillis() / 1000}")
-                }
-
-                sb.toString().let {
-                    when (semVerSafe) {
-                        true -> it.replace("[^a-zA-Z0-9-]".toRegex(), "-")
-                        false -> it
-                    }
-                }
+                sb.toString().replace("[^a-zA-Z0-9-]".toRegex(), "-")
             }
         }
 
-        @JvmStatic
-        public val DEFAULT_SHORT_NAME_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
-            var name: String? = null
-            if (name == null) {
-                // use branch name from git
-                val branchName = versioner.branchName
-                if (branchName != null && !branchName.isEmpty()) {
-                    name = branchName
-                }
-            }
-            if (name == null) {
-                // nothing found fallback to sha1
-                name = versioner.currentSha1Short
-            }
-            if (name == null) {
-                // fallback, i.e. when git not initialized
-                name = "undefined"
-            }
-
-            name.replace("feature/", "").replace("addon/", "")
-        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.pascalwelsch.gitversioner
+package co.spruce.gitversioner
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
