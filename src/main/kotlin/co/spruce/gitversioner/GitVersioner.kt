@@ -143,18 +143,22 @@ public open class GitVersioner internal constructor(
         @JvmStatic
         public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
             with(versioner) {
-                val sb = StringBuilder(versioner.versionCode.toString())
-                val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
                 val isFeatureBranch = baseBranch != branchName
-                if (isFeatureBranch && hasCommits)
-                    sb.append("-${branchName ?: "undefined"}")
-                if ((localChanges != NO_CHANGES) || isFeatureBranch)
-                    sb.append("-SNAPSHOT-${System.currentTimeMillis() / 1000}")
+                val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
 
-                sb.toString().replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                StringBuilder(versioner.versionCode.toString())
+                        .apply {
+                            //  this will result in a master version on a feature branch with 0 commits
+                            //  violates least surprise
+                            if (isFeatureBranch && hasCommits)
+                                append("-${branchName ?: "undefined"}-$featureBranchCommitCount")
+                            if ((localChanges != NO_CHANGES))
+                                append("-SNAPSHOT-${System.currentTimeMillis() / 1000}")
+                        }
+                        .toString()
+                        .replace("[^a-zA-Z0-9-]".toRegex(), "-")
             }
         }
-
     }
 }
 
