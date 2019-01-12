@@ -16,7 +16,6 @@ public open class GitVersioner internal constructor(
     public var baseBranch: String = "master"
     public var yearFactor: Int = 1000
 
-
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
 
     public var ciBranchNameProvider: () -> CharSequence? = {
@@ -24,38 +23,14 @@ public open class GitVersioner internal constructor(
         System.getenv("BRANCH") ?: System.getenv("BRANCH_NAME")
     }
 
-    //TODO add offset
-    /**
-     * base branch commit count + [timeComponent]
-     */
-    @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
-    public fun versionCode(): Int {
-        logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                "use the property GitVersioner.versionCode instead")
-        return versionCode
-    }
-
     /**
      * base branch commit count + [timeComponent]
      */
     public val versionCode: Int by lazy {
-        var code = -1 // default, this is actually a valid android versionCode
-        if (gitInfoExtractor.isGitProjectReady) {
-            val commitComponent = baseBranchCommits.size
-            code = commitComponent + timeComponent
-        }
-        logger?.debug("git versionCode: $code")
-        return@lazy code
-    }
-
-    /**
-     * string representation powered by [formatter]
-     */
-    @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
-    public fun versionName(): String {
-        logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                "use the property GitVersioner.versionName instead")
-        return versionName
+        when {
+            gitInfoExtractor.isGitProjectReady -> baseBranchCommits.size + timeComponent
+            else -> -1
+        }.also { logger?.debug("git versionCode: $it") }
     }
 
     /**
@@ -173,7 +148,7 @@ public open class GitVersioner internal constructor(
                 val isFeatureBranch = baseBranch != branchName
                 if (isFeatureBranch && hasCommits)
                     sb.append("-${branchName ?: "undefined"}")
-                if (localChanges != NO_CHANGES)
+                if ((localChanges != NO_CHANGES) || isFeatureBranch)
                     sb.append("-SNAPSHOT-${System.currentTimeMillis() / 1000}")
 
                 sb.toString().replace("[^a-zA-Z0-9-]".toRegex(), "-")
@@ -187,9 +162,8 @@ public data class LocalChanges(
         val filesChanged: Int = 0,
         val additions: Int = 0,
         val deletions: Int = 0) {
-    override fun toString(): String {
-        return "$filesChanged +$additions -$deletions"
-    }
+
+    override fun toString(): String = "$filesChanged +$additions -$deletions"
 
     fun shortStats(): String =
             if (filesChanged + additions + deletions == 0) "no changes"

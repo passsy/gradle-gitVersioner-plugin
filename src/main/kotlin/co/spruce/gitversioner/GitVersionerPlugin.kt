@@ -9,15 +9,16 @@ public class GitVersionerPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val rootProject = project.rootProject
         if (project != rootProject) {
-            throw IllegalStateException(
-                    "Register the 'com.pascalwelsch.gitversioner' plugin only once " +
-                            "in the root project build.gradle.")
+            throw IllegalStateException("Register the gitversioner plugin only once in the root project build.gradle.")
         }
 
         // add extension to root project, makes sense only once per project
         val gitVersionExtractor = ShellGitInfoExtractor(rootProject)
-        val gitVersioner = rootProject.extensions.create("gitVersioner",
-                GitVersioner::class.java, gitVersionExtractor, project.logger)
+        val gitVersioner = rootProject.extensions.create(
+                "gitVersioner",
+                GitVersioner::class.java,
+                gitVersionExtractor,
+                project.logger)
 
         project.task("gitVersion").apply {
             group = "Help"
@@ -40,7 +41,6 @@ public class GitVersionerPlugin : Plugin<Project> {
                         return@doLast
                     }
 
-
                     val baseBranchRange = (initialCommit?.take(7) ?: "") +
                             "..${featureBranchOriginCommit?.take(7) ?: ""}"
 
@@ -51,8 +51,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |
                         |GitVersioner Plugin
                         |-------------------
-                        |VersionCode: ${versionCode}
-                        |VersionName: ${versionName}
+                        |VersionCode: $versionCode
+                        |VersionName: $versionName
                         |
                         |baseBranch: $baseBranch
                         |current branch: $branchName
