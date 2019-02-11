@@ -28,7 +28,7 @@ public open class GitVersioner internal constructor(
 
     public var ciBranchNameProvider: () -> CharSequence? = {
         // get branch name on jenkins
-        System.getenv("BRANCH") ?: System.getenv("BRANCH_NAME")
+        System.getenv("BRANCH") ?: System.getenv("BRANCH_NAME") ?: System.getenv("GITREF")
     }
 
     //TODO add offset
