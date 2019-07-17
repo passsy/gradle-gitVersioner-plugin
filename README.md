@@ -70,11 +70,11 @@ gitVersioner {
     yearFactor 1000 // increasing every 8.57h
     
     // Default formatter properties
-    addSnapshot true                    // the "-SNAPSHOT" postfix
-    addLocalChangesDetails true         // counts of uncommitted, comitted but not push'd, etc: (1 +4 -3)
-    addFeatureBranchCommitCount false   //  omit the "+__"/master counter
-    addTimestamp true                   //  add "-$seconds_epoch"
-    semVerSafe   true                   //  replace anything but [^a-zA-Z0-9-] with "-", for interop with tools like NPM
+    addFeatureBranchCommitCount true    // add commit count since branch from master ex: "-3"
+    addSnapshot true                    // add "-SNAPSHOT" if there are local changes
+    addTimestamp true                   // add seconds since epoch if there are local changes ex: "-1563323817"
+    addLocalChangesDetails false        // add counts of uncommitted changes ex: "(1 +4 -3)"
+    semVerSafe   true                   // replace anything but [^a-zA-Z0-9-] with "-", for interop with tools like NPM
 
     // provide a custom formatter
     formatter = { gitVersioner ->

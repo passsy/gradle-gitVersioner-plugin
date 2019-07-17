@@ -19,7 +19,13 @@ public open class GitVersioner internal constructor(
 
     public var addSnapshot: Boolean = true
 
+    public var addFeatureBranchCommitCount: Boolean = true
+
+    public var addTimestamp: Boolean = true
+
     public var addLocalChangesDetails: Boolean = false
+
+    public var semVerSafe: Boolean = true
 
     public var formatter: ((GitVersioner) -> CharSequence) = DEFAULT_FORMATTER
 
@@ -170,12 +176,15 @@ public open class GitVersioner internal constructor(
 
                                 append("-$shortName")
                             }
-                            if (featureBranchCommitCount > 0) {
+                            if (addFeatureBranchCommitCount && featureBranchCommitCount > 0) {
                                 append("-$featureBranchCommitCount")
                             }
                             if (localChanges != NO_CHANGES) {
                                 if (addSnapshot) {
-                                    append("-SNAPSHOT-${System.currentTimeMillis() / 1000}")
+                                    append("-SNAPSHOT")
+                                }
+                                if (addTimestamp) {
+                                    append("-${System.currentTimeMillis() / 1000}")
                                 }
                                 if (addLocalChangesDetails) {
                                     append("(").append(localChanges).append(")")
@@ -183,7 +192,11 @@ public open class GitVersioner internal constructor(
                             }
                         }
                         .toString()
-                        .replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                        .apply {
+                            if (semVerSafe) this.replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                            else this
+                        }
+
             }
         }
 
