@@ -71,9 +71,9 @@ gitVersioner {
     
     // Default formatter properties
     addFeatureBranchCommitCount true    // add commit count since branch from master ex: "-3"
-    addSnapshot true                    // add "-SNAPSHOT" if there are local changes
     addTimestamp true                   // add seconds since epoch if there are local changes ex: "-1563323817"
     addLocalChangesDetails false        // add counts of uncommitted changes ex: "(1 +4 -3)"
+    addSnapshot true                    // add "-SNAPSHOT" if there are local changes
     semVerSafe   true                   // replace anything but [^a-zA-Z0-9-] with "-", for interop with tools like NPM
 
     // provide a custom formatter

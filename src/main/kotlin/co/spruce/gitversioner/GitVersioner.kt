@@ -182,9 +182,6 @@ public open class GitVersioner internal constructor(
                             if (addFeatureBranchCommitCount && featureBranchCommitCount > 0) {
                                 append("-$featureBranchCommitCount")
                             }
-                            if (addSnapshot && ((addFeatureBranchCommitCount && featureBranchCommitCount > 0) || localChanges != NO_CHANGES)) {
-                                append("-SNAPSHOT")
-                            }
                             if (localChanges != NO_CHANGES) {
                                 if (addTimestamp) {
                                     append("-${System.currentTimeMillis() / 1000}")
@@ -192,6 +189,9 @@ public open class GitVersioner internal constructor(
                                 if (addLocalChangesDetails) {
                                     append("(").append(localChanges).append(")")
                                 }
+                            }
+                            if (addSnapshot && ((addFeatureBranchCommitCount && featureBranchCommitCount > 0) || localChanges != NO_CHANGES)) {
+                                append("-SNAPSHOT")
                             }
                         }
                         .toString()
