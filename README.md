@@ -35,12 +35,12 @@ versionCode 2376
 // Top-level build.gradle
 buildscript {
     dependencies {
-        classpath 'com.pascalwelsch.gitversioner:gitversioner:0.3.1'
+        classpath 'com.spruce.gitversioner:gitversioner:1.0.0'
     }
 }
 
 // https://github.com/passsy/gradle-gitVersioner-plugin
-apply plugin: 'com.pascalwelsch.gitversioner'
+apply plugin: 'com.spruce.gitversioner'
 gitVersioner {
     baseBranch 'develop'
 }
@@ -62,7 +62,7 @@ android {
 
 ## Additional gitVersioner properties
 
-Here are the default properties, you can change them. See [here](https://github.com/passsy/gradle-gitVersioner-plugin/blob/master/gitversioner/src/main/kotlin/com/pascalwelsch/gitversioner/GitVersioner.kt) for more details
+Here are the default properties, you can change them. See [here](https://github.com/spruceholdings/gradle-gitVersioner-plugin/blob/master/gitversioner/src/main/kotlin/com/spruce/gitversioner/GitVersioner.kt) for more details
 
 ```gradle 
 gitVersioner {
