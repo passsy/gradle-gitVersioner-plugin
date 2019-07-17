@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'co.spruce'
-version = '1.0.0-rollback-2-SNAPSHOT'
+version = '1.0.0-rollback-3-SNAPSHOT'
 
 dependencies {
     compile gradleApi()
