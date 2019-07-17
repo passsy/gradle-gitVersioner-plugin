@@ -179,10 +179,10 @@ public open class GitVersioner internal constructor(
                             if (addFeatureBranchCommitCount && featureBranchCommitCount > 0) {
                                 append("-$featureBranchCommitCount")
                             }
+                            if (addSnapshot && ((addFeatureBranchCommitCount && featureBranchCommitCount > 0) || localChanges != NO_CHANGES)) {
+                                append("-SNAPSHOT")
+                            }
                             if (localChanges != NO_CHANGES) {
-                                if (addSnapshot) {
-                                    append("-SNAPSHOT")
-                                }
                                 if (addTimestamp) {
                                     append("-${System.currentTimeMillis() / 1000}")
                                 }
