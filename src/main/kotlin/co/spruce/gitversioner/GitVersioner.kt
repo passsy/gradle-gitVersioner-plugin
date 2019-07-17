@@ -44,6 +44,9 @@ public open class GitVersioner internal constructor(
         if (gitInfoExtractor.isGitProjectReady) {
             val commitComponent = baseBranchCommits.size
             code = commitComponent + timeComponent
+            if (featureBranchCommitCount > 0) {
+                code++
+            }
         }
         logger?.debug("git versionCode: $code")
         return@lazy code
