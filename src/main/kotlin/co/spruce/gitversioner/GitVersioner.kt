@@ -196,7 +196,7 @@ public open class GitVersioner internal constructor(
                         }
                         .toString()
                         .apply {
-                            if (semVerSafe) this.replace("[^a-zA-Z0-9-]".toRegex(), "-")
+                            if (semVerSafe) this.replace("[^a-zA-Z0-9]".toRegex(), "-")
                             else this
                         }
 
@@ -222,7 +222,7 @@ public open class GitVersioner internal constructor(
                 name = "undefined"
             }
 
-            name.replace("feature/", "").replace("addon/", "")
+            name.replace("feature/", "").replace("addon/", "").replace("/", "-")
         }
     }
 }
