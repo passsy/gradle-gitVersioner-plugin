@@ -189,9 +189,9 @@ public open class GitVersioner internal constructor(
                                 if (addLocalChangesDetails) {
                                     append("(").append(localChanges).append(")")
                                 }
-                            }
-                            if (addSnapshot && ((addFeatureBranchCommitCount && featureBranchCommitCount > 0) || localChanges != NO_CHANGES)) {
-                                append("-SNAPSHOT")
+                                if (addSnapshot) {
+                                    append("-SNAPSHOT")
+                                }
                             }
                         }
                         .toString()
