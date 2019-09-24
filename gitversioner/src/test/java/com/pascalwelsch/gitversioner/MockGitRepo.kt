@@ -100,20 +100,21 @@ class GitInfoExtractorStub(
     override val currentBranch: String? = null,
     override val localChanges: LocalChanges = NO_CHANGES,
     override val isGitWorking: Boolean = true,
-    override val isHistoryShallowed: Boolean = false
+    override val isHistoryShallowed: Boolean = false,
+    val commits: List<String> = emptyList()
 ) : GitInfoExtractor {
 
     override fun commitsUpTo(rev: String, args: String): List<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return commits
     }
 
     override val initialCommitDate: Long
-        get() = TODO("not implemented")
+        get() = 0L
 
     override val commitsToHead: List<String>
-        get() = TODO("not implemented")
+        get() = commits
 
     override fun commitDate(rev: String): Long {
-        TODO("not implemented")
+        return 0L
     }
 }

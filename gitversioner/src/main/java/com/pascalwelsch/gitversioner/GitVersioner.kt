@@ -256,7 +256,7 @@ public open class GitVersioner internal constructor(
     companion object {
 
         @JvmStatic
-        public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
+        public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = formatter@{ versioner ->
             with(versioner) {
                 val sb = StringBuilder(if (isHistoryShallowed) "shallowed" else versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
@@ -284,12 +284,12 @@ public open class GitVersioner internal constructor(
                         sb.append("(").append(localChanges).append(")")
                     }
                 }
-                sb.toString()
+                return@formatter sb.toString()
             }
         }
 
         @JvmStatic
-        public val DEFAULT_SHORT_NAME_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
+        public val DEFAULT_SHORT_NAME_FORMATTER: ((GitVersioner) -> CharSequence) = formatter@{ versioner ->
             var name: String? = null
             if (name == null) {
                 // use branch name from git
@@ -307,7 +307,17 @@ public open class GitVersioner internal constructor(
                 name = "undefined"
             }
 
-            name.replace(Regex("(.*/)"), "")
+            // remove "feature/" and "bugfix/" prefixes (only the first one)
+            var clean = Regex("[^\\/]*\\/(.*)").matchEntire(name)?.groups?.get(1)?.value
+            if (clean.isNullOrBlank()) {
+                clean = name
+            }
+
+            // remove all special characters
+            clean = clean.replace(Regex("[^\\w_\\-]+"), "_")
+                .replace("__", "_")
+                .trim('_')
+            return@formatter clean
         }
     }
 }
