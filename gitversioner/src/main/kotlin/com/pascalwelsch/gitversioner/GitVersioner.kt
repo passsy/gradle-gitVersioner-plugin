@@ -225,7 +225,7 @@ public open class GitVersioner internal constructor(
                 name = "undefined"
             }
 
-            name.replace("feature/", "").replace("addon/", "")
+            name.replace(Regex("(.*/)"), "");
         }
     }
 }
