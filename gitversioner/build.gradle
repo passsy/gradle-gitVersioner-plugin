@@ -17,7 +17,7 @@ apply plugin: 'kotlin'
 apply plugin: "guru.stefma.artifacts"
 
 group = 'com.pascalwelsch.gitversioner'
-version = '0.4.2'
+version = '0.4.3'
 
 dependencies {
     compile gradleApi()
