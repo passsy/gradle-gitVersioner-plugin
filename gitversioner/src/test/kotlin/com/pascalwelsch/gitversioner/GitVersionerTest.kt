@@ -509,13 +509,13 @@ class GitVersionerTest {
             softly.assertThat(versioner.localChanges).isEqualTo(NO_CHANGES)
             softly.assertThat(versioner.yearFactor).isEqualTo(1000)
             softly.assertThat(versioner.timeComponent).isEqualTo(0)
-            softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo(null)
+            softly.assertThat(versioner.featureBranchOriginCommit).isNull()
         }
     }
 
     @Test
     fun `no commits`() {
-        val git = MockGitRepo() // git initialized but nothing commited
+        val git = MockGitRepo() // git initialized but nothing committed
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
@@ -529,7 +529,7 @@ class GitVersionerTest {
             softly.assertThat(versioner.localChanges).isEqualTo(NO_CHANGES)
             softly.assertThat(versioner.yearFactor).isEqualTo(1000)
             softly.assertThat(versioner.timeComponent).isEqualTo(0)
-            softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo(null)
+            softly.assertThat(versioner.featureBranchOriginCommit).isNull()
         }
     }
 
@@ -551,7 +551,7 @@ class GitVersionerTest {
             softly.assertThat(versioner.localChanges).isEqualTo(localChanges)
             softly.assertThat(versioner.yearFactor).isEqualTo(1000)
             softly.assertThat(versioner.timeComponent).isEqualTo(0)
-            softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo(null)
+            softly.assertThat(versioner.featureBranchOriginCommit).isNull()
         }
     }
 
