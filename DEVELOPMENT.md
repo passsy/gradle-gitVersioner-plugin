@@ -23,3 +23,16 @@ buildscript {
 ```bash
 ./gradlew clean gitVersion
 ```
+
+## Publish artifacts
+
+Add bintray keys to `~/.gradle/gradle.properties`
+```properties
+bintrayUser=passsy
+bintrayKey=cba6a4869abc49b6ca4...
+```
+
+Publish
+```bash
+ ./gradlew clean build bintrayUpload -PdryRun=false
+```
