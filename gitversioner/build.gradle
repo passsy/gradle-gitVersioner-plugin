@@ -31,10 +31,6 @@ repositories {
     jcenter()
 }
 
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-}
-
 javaArtifact {
     artifactId = 'gitversioner'
     name = "Gitversioner gradle plugin"
