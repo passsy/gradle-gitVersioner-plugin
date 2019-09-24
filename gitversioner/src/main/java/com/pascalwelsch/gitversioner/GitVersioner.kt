@@ -10,8 +10,8 @@ private val YEAR_IN_SECONDS = TimeUnit.DAYS.toSeconds(365)
 public val NO_CHANGES = LocalChanges(0, 0, 0)
 
 public open class GitVersioner internal constructor(
-        private val gitInfoExtractor: GitInfoExtractor,
-        private val logger: Logger? = null
+    private val gitInfoExtractor: GitInfoExtractor,
+    private val logger: Logger? = null
 ) {
 
     public var baseBranch: String = "master"
@@ -37,8 +37,10 @@ public open class GitVersioner internal constructor(
      */
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
-        logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                "use the property GitVersioner.versionCode instead")
+        logger?.warn(
+            "The GitVersioner.versionCode() method has been deprecated, " +
+                    "use the property GitVersioner.versionCode instead"
+        )
         return versionCode
     }
 
@@ -60,8 +62,10 @@ public open class GitVersioner internal constructor(
      */
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
-        logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                "use the property GitVersioner.versionName instead")
+        logger?.warn(
+            "The GitVersioner.versionName() method has been deprecated, " +
+                    "use the property GitVersioner.versionName instead"
+        )
         return versionName
     }
 
@@ -133,7 +137,8 @@ public open class GitVersioner internal constructor(
         val latestBaseCommit = featureBranchOriginCommit ?: return@lazy 0
 
         val timeToHead = gitInfoExtractor.commitDate(
-                latestBaseCommit) - gitInfoExtractor.initialCommitDate
+            latestBaseCommit
+        ) - gitInfoExtractor.initialCommitDate
         return@lazy (timeToHead * yearFactor / YEAR_IN_SECONDS + 0.5).toInt()
     }
 
@@ -212,7 +217,7 @@ public open class GitVersioner internal constructor(
             if (name == null) {
                 // use branch name from git
                 val branchName = versioner.branchName
-                if (branchName != null && !branchName.isEmpty()) {
+                if (branchName != null && branchName.isNotEmpty()) {
                     name = branchName
                 }
             }
@@ -225,15 +230,15 @@ public open class GitVersioner internal constructor(
                 name = "undefined"
             }
 
-            name.replace(Regex("(.*/)"), "");
+            name.replace(Regex("(.*/)"), "")
         }
     }
 }
 
 public data class LocalChanges(
-        val filesChanged: Int = 0,
-        val additions: Int = 0,
-        val deletions: Int = 0
+    val filesChanged: Int = 0,
+    val additions: Int = 0,
+    val deletions: Int = 0
 ) {
 
     override fun toString(): String {

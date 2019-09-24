@@ -1,20 +1,20 @@
 package com.pascalwelsch.gitversioner
 
 data class Commit(
-        val sha1: String,
-        val parent: String?,
-        val date: Long
+    val sha1: String,
+    val parent: String?,
+    val date: Long
 )
 
 /**
  * Mocks a real git repo with commit history and branches
  */
 open class MockGitRepo(
-        val graph: Collection<Commit> = emptyList(),
-        val head: String? = null,
-        val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
-        override val localChanges: LocalChanges = NO_CHANGES,
-        override val isGitProjectReady: Boolean = true
+    val graph: Collection<Commit> = emptyList(),
+    val head: String? = null,
+    val branchHeads: List<Pair<String /*sha1*/, String/*name*/>> = emptyList(),
+    override val localChanges: LocalChanges = NO_CHANGES,
+    override val isGitProjectReady: Boolean = true
 ) : GitInfoExtractor {
 
     val headCommit: Commit? = if (head == null) null else
@@ -51,7 +51,7 @@ open class MockGitRepo(
         }
 
     override fun commitDate(rev: String): Long = commitInGraph(rev)?.date
-            ?: throw IllegalStateException("commit $rev not in graph")
+        ?: throw IllegalStateException("commit $rev not in graph")
 
     override val commitsToHead: List<String>
         get() = if (headCommit == null) emptyList() else commitsUpTo(headCommit.sha1)
@@ -89,10 +89,10 @@ open class MockGitRepo(
 }
 
 class GitInfoExtractorStub(
-        override val currentSha1: String? = null,
-        override val currentBranch: String? = null,
-        override val localChanges: LocalChanges = NO_CHANGES,
-        override val isGitProjectReady: Boolean = true
+    override val currentSha1: String? = null,
+    override val currentBranch: String? = null,
+    override val localChanges: LocalChanges = NO_CHANGES,
+    override val isGitProjectReady: Boolean = true
 ) : GitInfoExtractor {
 
     override fun commitsUpTo(rev: String, args: String): List<String> {

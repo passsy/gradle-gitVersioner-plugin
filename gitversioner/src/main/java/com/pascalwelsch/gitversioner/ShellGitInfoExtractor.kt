@@ -28,8 +28,7 @@ internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtr
 
     override val currentBranch: String? by lazy {
         if (!isGitProjectReady) return@lazy null
-        val result = "git symbolic-ref --short -q HEAD".execute()
-        when (result) {
+        when (val result = "git symbolic-ref --short -q HEAD".execute()) {
             is ProcessResult.Success -> {
                 val branch = result.text.trim()
                 if (branch.isEmpty()) null else branch
@@ -49,35 +48,35 @@ internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtr
     override val initialCommitDate: Long by lazy {
         val initialCommit: String = commitsToHead.lastOrNull() ?: return@lazy 0L
         val time = listOf("git", "log", "-n 1", "--pretty=format:'%at'", initialCommit).execute()
-                .throwOnError().text.replace("\'", "").trim()
+            .throwOnError().text.replace("\'", "").trim()
 
         return@lazy if (time.isEmpty()) 0L else time.toLong()
     }
 
     override fun commitDate(rev: String): Long {
         val time = listOf("git", "log", "--pretty=format:'%at'", "-n 1", rev).execute()
-                .throwOnError().text.replace("\'", "").trim()
+            .throwOnError().text.replace("\'", "").trim()
         return if (time.isEmpty()) 0 else time.toLong()
     }
 
     override val commitsToHead: List<String> by lazy { commitsUpTo("HEAD") }
 
     override val isGitProjectReady: Boolean by lazy {
-        val result = "git status".execute()
-        when (result) {
+        when (val result = "git status".execute()) {
             is ProcessResult.Success -> true
             is ProcessResult.Error -> {
-                val exitCode = result.errorCode
-                when (exitCode) {
+                when (val exitCode = result.errorCode) {
                     0 -> true
                     69 -> {
-                        println("git returned with error 69\n" +
-                                "If you are a mac user that message is telling you is that you need to open the " +
-                                "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
-                                "update, you need to accept the new license EULA agreement that’s part of the " +
-                                "updated XCode.\n\n" +
-                                "tl;dr run\n" +
-                                "\txcode-select --install")
+                        println(
+                            "git returned with error 69\n" +
+                                    "If you are a mac user that message is telling you is that you need to open the " +
+                                    "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
+                                    "update, you need to accept the new license EULA agreement that’s part of the " +
+                                    "updated XCode.\n\n" +
+                                    "tl;dr run\n" +
+                                    "\txcode-select --install"
+                        )
                         false
                     }
                     else -> {

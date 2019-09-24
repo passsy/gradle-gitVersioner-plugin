@@ -10,14 +10,17 @@ public class GitVersionerPlugin : Plugin<Project> {
         val rootProject = project.rootProject
         if (project != rootProject) {
             throw IllegalStateException(
-                    "Register the 'com.pascalwelsch.gitversioner' plugin only once " +
-                            "in the root project build.gradle.")
+                "Register the 'com.pascalwelsch.gitversioner' plugin only once " +
+                        "in the root project build.gradle."
+            )
         }
 
         // add extension to root project, makes sense only once per project
         val gitVersionExtractor = ShellGitInfoExtractor(rootProject)
-        val gitVersioner = rootProject.extensions.create("gitVersioner",
-                GitVersioner::class.java, gitVersionExtractor, project.logger)
+        val gitVersioner = rootProject.extensions.create(
+            "gitVersioner",
+            GitVersioner::class.java, gitVersionExtractor, project.logger
+        )
 
         project.task("gitVersion").apply {
             group = "Help"
@@ -26,7 +29,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                 with(gitVersioner) {
 
                     if (!gitVersioner.isGitInitialized) {
-                        println("""
+                        println(
+                            """
                         |
                         |GitVersioner Plugin
                         |-------------------
@@ -36,7 +40,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |baseBranch: $baseBranch
                         |
                         |git not initialized
-                        """.replaceIndentByMargin())
+                        """.replaceIndentByMargin()
+                        )
                         return@doLast
                     }
 
@@ -46,7 +51,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                     val featureBranchRange = (featureBranchOriginCommit?.take(7) ?: "") +
                             "..${currentSha1Short ?: ""}"
 
-                    println("""
+                    println(
+                        """
                         |
                         |GitVersioner Plugin
                         |-------------------
@@ -63,7 +69,8 @@ public class GitVersionerPlugin : Plugin<Project> {
                         |timeComponent: $timeComponent (yearFactor:$yearFactor)
                         |
                         |LocalChanges: ${localChanges.shortStats()}
-                        """.replaceIndentByMargin())
+                        """.replaceIndentByMargin()
+                    )
                 }
             }
         }
@@ -73,7 +80,8 @@ public class GitVersionerPlugin : Plugin<Project> {
             this.gitVersioner = gitVersioner
 
             group = "Build"
-            description = "analyzes the git history and creates a version name (generates machine readable output file)"
+            description =
+                "analyzes the git history and creates a version name (generates machine readable output file)"
         }
     }
 }

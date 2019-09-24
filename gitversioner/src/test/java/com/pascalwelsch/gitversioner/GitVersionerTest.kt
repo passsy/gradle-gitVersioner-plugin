@@ -13,17 +13,17 @@ class GitVersionerTest {
     @Test
     fun `default - clean on default branch master`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -48,17 +48,17 @@ class GitVersionerTest {
     @Test
     fun `default - with local changes - addSnapshot false`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -85,17 +85,17 @@ class GitVersionerTest {
     @Test
     fun `default - with local changes - addLocalChangesDetails false`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -122,17 +122,17 @@ class GitVersionerTest {
     @Test
     fun `default - without local changes information`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -160,17 +160,17 @@ class GitVersionerTest {
     @Test
     fun `default - with local changes`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -196,17 +196,17 @@ class GitVersionerTest {
     @Test
     fun `base branch not in history`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -235,13 +235,13 @@ class GitVersionerTest {
     @Test
     fun `on orphan initial commit`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = null, date = 150_010_000), // <-- HEAD, orphan
+            Commit(sha1 = "X", parent = null, date = 150_010_000), // <-- HEAD, orphan
 
-                Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("e" to "master", "X" to "orphan"))
@@ -266,15 +266,15 @@ class GitVersionerTest {
     @Test
     fun `on orphan few commits`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "b'", date = 150_030_000), // <-- HEAD, feature/x
-                Commit(sha1 = "b'", parent = "a'", date = 150_020_000),
-                Commit(sha1 = "a'", parent = null, date = 150_010_000), // <-- orphan
+            Commit(sha1 = "X", parent = "b'", date = 150_030_000), // <-- HEAD, feature/x
+            Commit(sha1 = "b'", parent = "a'", date = 150_020_000),
+            Commit(sha1 = "a'", parent = null, date = 150_010_000), // <-- orphan
 
-                Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("e" to "master", "X" to "feature/x"))
@@ -301,7 +301,7 @@ class GitVersionerTest {
     @Test
     fun `one commit`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = null, date = 150_006_000) // <-- master, HEAD
+            Commit(sha1 = "X", parent = null, date = 150_006_000) // <-- master, HEAD
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -326,7 +326,7 @@ class GitVersionerTest {
     @Test
     fun `short sha1`() {
         val graph = listOf(
-                Commit(sha1 = "abcdefghijkl", parent = null, date = 150_006_000) // <-- master, HEAD
+            Commit(sha1 = "abcdefghijkl", parent = null, date = 150_006_000) // <-- master, HEAD
         )
 
         val git = MockGitRepo(graph, "abcdefghijkl", listOf("abcdefghijkl" to "master"))
@@ -354,20 +354,20 @@ class GitVersionerTest {
     fun `short sha1 - edge cases`() {
 
         assertThat(GitVersioner(GitInfoExtractorStub(currentSha1 = null)).currentSha1Short)
-                .isNull()
+            .isNull()
 
         assertThat(GitVersioner(GitInfoExtractorStub(currentSha1 = "abc")).currentSha1Short)
-                .isEqualTo("abc")
+            .isEqualTo("abc")
 
         assertThat(GitVersioner(GitInfoExtractorStub(currentSha1 = "abcdefghi")).currentSha1Short)
-                .hasSize(7).isEqualTo("abcdefg")
+            .hasSize(7).isEqualTo("abcdefg")
     }
 
     @Test
     fun `timeComponent increased by 1 after ~8h`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "a", date = 150_000_000), // <-- HEAD, master
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "a", date = 150_000_000), // <-- HEAD, master
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -390,9 +390,11 @@ class GitVersionerTest {
 
         // now the same with larger difference between commits (9h) should increase by 1 with default yearFactor
         val graph2 = listOf(
-                Commit(sha1 = "X", parent = "a",
-                        date = 150_000_000 + TimeUnit.HOURS.toSeconds(9)), // <-- HEAD, master
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(
+                sha1 = "X", parent = "a",
+                date = 150_000_000 + TimeUnit.HOURS.toSeconds(9)
+            ), // <-- HEAD, master
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git2 = MockGitRepo(graph2, "X", listOf("X" to "master"))
@@ -417,8 +419,8 @@ class GitVersionerTest {
     @Test
     fun `test yearfactor`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "a", date = 150_000_000), // <-- HEAD, master
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "a", date = 150_000_000), // <-- HEAD, master
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -441,9 +443,11 @@ class GitVersionerTest {
 
         // add one year / yearFactor 1000
         val graph2 = listOf(
-                Commit(sha1 = "X", parent = "a",
-                        date = 150_000_000 + TimeUnit.DAYS.toSeconds(365)), // <-- HEAD, master
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(
+                sha1 = "X", parent = "a",
+                date = 150_000_000 + TimeUnit.DAYS.toSeconds(365)
+            ), // <-- HEAD, master
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git2 = MockGitRepo(graph2, "X", listOf("X" to "master"))
@@ -468,9 +472,11 @@ class GitVersionerTest {
     @Test
     fun `custom year factor 1200`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "a",
-                        date = 150_000_000 + TimeUnit.DAYS.toSeconds(365)), // <-- HEAD, master
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(
+                sha1 = "X", parent = "a",
+                date = 150_000_000 + TimeUnit.DAYS.toSeconds(365)
+            ), // <-- HEAD, master
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -565,27 +571,31 @@ class GitVersionerTest {
     @Test
     fun `custom name formatter`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j",
-                        date = 150_010_000), // <-- fix_ABC-12345_nothing_special, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(
+                sha1 = "X", parent = "j",
+                date = 150_010_000
+            ), // <-- fix_ABC-12345_nothing_special, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
-        val git = MockGitRepo(graph, "fix_ABC-12345_nothing_special",
-                listOf("i" to "master", "X" to "fix_ABC-12345_nothing_special"))
+        val git = MockGitRepo(
+            graph, "fix_ABC-12345_nothing_special",
+            listOf("i" to "master", "X" to "fix_ABC-12345_nothing_special")
+        )
         val versioner = GitVersioner(git)
         versioner.shortNameFormatter = { v ->
             // use default formatter but only use the jira id when detected and drop rest
             GitVersioner.DEFAULT_SHORT_NAME_FORMATTER(v)
-                    .replace(".*(ABC-\\d*).*".toRegex(), { it.groupValues[1] })
+                .replace(".*(ABC-\\d*).*".toRegex()) { it.groupValues[1] }
         }
 
         assertSoftly { softly ->
@@ -606,22 +616,26 @@ class GitVersionerTest {
     @Test
     fun `custom formatter`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j",
-                        date = 150_010_000), // <-- fix_ABC-12345_nothing_special, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(
+                sha1 = "X", parent = "j",
+                date = 150_010_000
+            ), // <-- fix_ABC-12345_nothing_special, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
-        val git = MockGitRepo(graph, "fix_ABC-12345_nothing_special",
-                listOf("i" to "master", "X" to "fix_ABC-12345_nothing_special"))
+        val git = MockGitRepo(
+            graph, "fix_ABC-12345_nothing_special",
+            listOf("i" to "master", "X" to "fix_ABC-12345_nothing_special")
+        )
         val versioner = GitVersioner(git)
         versioner.formatter = { v ->
             "I do my own thing ${v.commitCount}"
@@ -645,17 +659,17 @@ class GitVersionerTest {
     @Test
     fun `no branch name - sha1 fallback`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("i" to "master"))
@@ -679,17 +693,17 @@ class GitVersionerTest {
     @Test
     fun `custom name formatter - fails`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000), // <-- master
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("i" to "master"))
@@ -715,17 +729,17 @@ class GitVersionerTest {
     @Test
     fun `custom formatter - fails`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- master, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "master"))
@@ -751,17 +765,17 @@ class GitVersionerTest {
     @Test
     fun `default - branchname from ci`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD, master
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD, master
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = object : MockGitRepo(graph, "X", listOf("X" to "master")) {
@@ -789,17 +803,17 @@ class GitVersionerTest {
     @Test
     fun `default - receice default branchname from ci`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = object : MockGitRepo(graph, "X", listOf("X" to "master")) {

@@ -11,17 +11,17 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - few commits - local changes`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -47,17 +47,17 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - few commits - local changes - attachDiffToSnapshot false`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(3, 5, 7)
@@ -85,17 +85,17 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - few commits`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("g" to "master", "X" to "feature/bug_123"))
@@ -120,22 +120,22 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - new commits on baseBranch will not increment versioncode`() {
         val graph = listOf(
-                // new commits on master way in the future
-                Commit(sha1 = "a3", parent = "a2", date = 160_013_000),
-                Commit(sha1 = "a2", parent = "a1", date = 160_012_000),
-                Commit(sha1 = "a1", parent = "g", date = 160_011_000),
+            // new commits on master way in the future
+            Commit(sha1 = "a3", parent = "a2", date = 160_013_000),
+            Commit(sha1 = "a2", parent = "a1", date = 160_012_000),
+            Commit(sha1 = "a1", parent = "g", date = 160_011_000),
 
-                Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
-                Commit(sha1 = "j", parent = "i", date = 150_009_000),
-                Commit(sha1 = "i", parent = "h", date = 150_008_000),
-                Commit(sha1 = "h", parent = "g", date = 150_007_000),
-                Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- base of feature branch
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "j", date = 150_010_000), // <-- feature/bug_123, HEAD
+            Commit(sha1 = "j", parent = "i", date = 150_009_000),
+            Commit(sha1 = "i", parent = "h", date = 150_008_000),
+            Commit(sha1 = "h", parent = "g", date = 150_007_000),
+            Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- base of feature branch
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         // with new commits on master
@@ -171,13 +171,13 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - no commits`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "feature/bug_123", "X" to "master"))
@@ -202,13 +202,13 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - no commits - local changes (additions only)`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(1, 2, 0)
@@ -234,13 +234,13 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - no commits - local changes (deletions only)`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "f", date = 150_006_000), // <-- master, feature/bug_123, HEAD
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val localChanges = LocalChanges(1, 0, 2)
@@ -266,14 +266,14 @@ class FeatureBranchTest {
     @Test
     fun `on feature branch - one commit`() {
         val graph = listOf(
-                Commit(sha1 = "X", parent = "g", date = 150_006_000), // <-- feature/bug_123, HEAD
-                Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000),
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "X", parent = "g", date = 150_006_000), // <-- feature/bug_123, HEAD
+            Commit(sha1 = "g", parent = "f", date = 150_006_000), // <-- master
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000),
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "X", listOf("X" to "feature/bug_123", "g" to "master"))
@@ -298,14 +298,14 @@ class FeatureBranchTest {
     @Test
     fun `no feature branch name - like a jenkins PR build`() {
         val graph = listOf(
-                Commit(sha1 = "abcdefghij", parent = "g", date = 150_006_000), // <-- HEAD
-                Commit(sha1 = "g", parent = "f", date = 150_006_000),
-                Commit(sha1 = "f", parent = "e", date = 150_005_000),
-                Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
-                Commit(sha1 = "d", parent = "c", date = 150_003_000),
-                Commit(sha1 = "c", parent = "b", date = 150_002_000),
-                Commit(sha1 = "b", parent = "a", date = 150_001_000),
-                Commit(sha1 = "a", parent = null, date = 150_000_000)
+            Commit(sha1 = "abcdefghij", parent = "g", date = 150_006_000), // <-- HEAD
+            Commit(sha1 = "g", parent = "f", date = 150_006_000),
+            Commit(sha1 = "f", parent = "e", date = 150_005_000),
+            Commit(sha1 = "e", parent = "d", date = 150_004_000), // <-- master
+            Commit(sha1 = "d", parent = "c", date = 150_003_000),
+            Commit(sha1 = "c", parent = "b", date = 150_002_000),
+            Commit(sha1 = "b", parent = "a", date = 150_001_000),
+            Commit(sha1 = "a", parent = null, date = 150_000_000)
         )
 
         val git = MockGitRepo(graph, "abcdefghij", listOf("e" to "master"))
