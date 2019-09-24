@@ -57,3 +57,11 @@ publish {
     desc = "Extracts a useful versionCode and versionName from git history"
     website = 'https://github.com/passsy/gradle-gitVersioner-plugin'
 }
+
+
+task saveVersionToResources(type: WriteProperties) {
+    comment = "gitversioner gradle plugin version"
+    property('version', version)
+    outputFile = file(sourceSets.main.output.resourcesDir.absolutePath + "/version.properties")
+}
+processResources.dependsOn(saveVersionToResources)

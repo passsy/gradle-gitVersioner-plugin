@@ -2,6 +2,7 @@ package com.pascalwelsch.gitversioner
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import java.util.Properties
 
 @Suppress("RedundantVisibilityModifier")
 public class GitVersionerPlugin : Plugin<Project> {
@@ -45,7 +46,7 @@ public class GitVersionerPlugin : Plugin<Project> {
                         println(
                             """
                         |
-                        |GitVersioner Plugin
+                        |GitVersioner Plugin v$pluginVersion
                         |-------------------
                         |VersionCode: $versionCode
                         |VersionName: $versionName
@@ -67,7 +68,7 @@ public class GitVersionerPlugin : Plugin<Project> {
                     println(
                         """
                         |
-                        |GitVersioner Plugin
+                        |GitVersioner Plugin v$pluginVersion
                         |-------------------
                         |VersionCode: $versionCode
                         |VersionName: $versionName
@@ -96,5 +97,11 @@ public class GitVersionerPlugin : Plugin<Project> {
             description =
                 "analyzes the git history and creates a version name (generates machine readable output file)"
         }
+    }
+
+    val pluginVersion: String by lazy<String> {
+        val props = Properties()
+        props.load(GitVersionerPlugin::class.java.getResourceAsStream("/version.properties"))
+        props.getProperty("version")
     }
 }
