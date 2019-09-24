@@ -37,8 +37,10 @@ public open class GitVersioner internal constructor(
      */
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionCode"))
     public fun versionCode(): Int {
-        logger?.warn("The GitVersioner.versionCode() method has been deprecated, " +
-                "use the property GitVersioner.versionCode instead")
+        logger?.warn(
+            "The GitVersioner.versionCode() method has been deprecated, " +
+                    "use the property GitVersioner.versionCode instead"
+        )
         return versionCode
     }
 
@@ -65,8 +67,10 @@ public open class GitVersioner internal constructor(
      */
     @Deprecated("converted to property", replaceWith = ReplaceWith("versionName"))
     public fun versionName(): String {
-        logger?.warn("The GitVersioner.versionName() method has been deprecated, " +
-                "use the property GitVersioner.versionName instead")
+        logger?.warn(
+            "The GitVersioner.versionName() method has been deprecated, " +
+                    "use the property GitVersioner.versionName instead"
+        )
         return versionName
     }
 
@@ -254,7 +258,7 @@ public open class GitVersioner internal constructor(
         @JvmStatic
         public val DEFAULT_FORMATTER: ((GitVersioner) -> CharSequence) = { versioner ->
             with(versioner) {
-                val sb = StringBuilder(if(isHistoryShallowed) "shallowed" else versioner.versionCode.toString())
+                val sb = StringBuilder(if (isHistoryShallowed) "shallowed" else versioner.versionCode.toString())
                 val hasCommits = featureBranchCommitCount > 0 || baseBranchCommitCount > 0
                 if (baseBranch != branchName && (hasCommits || isHistoryShallowed)) {
                     // add branch identifier for

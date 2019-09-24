@@ -5,7 +5,6 @@ import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.*
 import org.junit.runner.*
 import org.junit.runners.*
-import java.util.concurrent.TimeUnit
 
 @RunWith(JUnit4::class)
 class ShallowCloneTest {
@@ -344,5 +343,4 @@ class ShallowCloneTest {
             softly.assertThat(versioner.featureBranchOriginCommit).isEqualTo("X")
         }
     }
-
 }
