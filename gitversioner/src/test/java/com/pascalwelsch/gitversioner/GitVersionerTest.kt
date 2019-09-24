@@ -505,7 +505,9 @@ class GitVersionerTest {
         val versioner = GitVersioner(git)
 
         assertSoftly { softly ->
-            softly.assertThat(versioner.versionCode).isEqualTo(-1)
+            // since Android gradle plugin 3.4.0 the versionCode is expected to be positive
+            // https://developer.android.com/studio/publish/versioning#appversioning
+            softly.assertThat(versioner.versionCode).isEqualTo(1)
             softly.assertThat(versioner.versionName).isEqualTo("undefined")
             softly.assertThat(versioner.baseBranchCommitCount).isEqualTo(0)
             softly.assertThat(versioner.featureBranchCommitCount).isEqualTo(0)

@@ -48,7 +48,7 @@ public open class GitVersioner internal constructor(
      * base branch commit count + [timeComponent]
      */
     public val versionCode: Int by lazy {
-        var code = -1 // default, this is actually a valid android versionCode
+        var code = 1
         if (gitInfoExtractor.isGitProjectReady) {
             val commitComponent = baseBranchCommits.size
             code = commitComponent + timeComponent
