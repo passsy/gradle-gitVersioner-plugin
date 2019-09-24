@@ -3,6 +3,7 @@ package com.pascalwelsch.gitversioner
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 interface GitInfoExtractor {
     val currentSha1: String?
@@ -10,7 +11,8 @@ interface GitInfoExtractor {
     val localChanges: LocalChanges
     val initialCommitDate: Long
     val commitsToHead: List<String>
-    val isGitProjectReady: Boolean
+    val isGitWorking: Boolean
+    val isHistoryShallowed: Boolean
     fun commitDate(rev: String): Long
     fun commitsUpTo(rev: String, args: String = ""): List<String>
 }
@@ -21,13 +23,11 @@ interface GitInfoExtractor {
 internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtractor {
 
     override val currentSha1: String? by lazy {
-        if (!isGitProjectReady) return@lazy null
         val sha1 = "git rev-parse HEAD".execute().throwOnError().text.trim()
         if (sha1.isEmpty()) null else sha1
     }
 
     override val currentBranch: String? by lazy {
-        if (!isGitProjectReady) return@lazy null
         when (val result = "git symbolic-ref --short -q HEAD".execute()) {
             is ProcessResult.Success -> {
                 val branch = result.text.trim()
@@ -38,7 +38,6 @@ internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtr
     }
 
     override val localChanges: LocalChanges by lazy {
-        if (!isGitProjectReady) return@lazy NO_CHANGES
         val shortStat = "git diff HEAD --shortstat".execute().throwOnError().text.trim()
         if (shortStat.isEmpty()) return@lazy NO_CHANGES
 
@@ -61,36 +60,53 @@ internal class ShellGitInfoExtractor(private val project: Project) : GitInfoExtr
 
     override val commitsToHead: List<String> by lazy { commitsUpTo("HEAD") }
 
-    override val isGitProjectReady: Boolean by lazy {
-        when (val result = "git status".execute()) {
-            is ProcessResult.Success -> true
-            is ProcessResult.Error -> {
-                when (val exitCode = result.errorCode) {
-                    0 -> true
-                    69 -> {
-                        println(
-                            "git returned with error 69\n" +
-                                    "If you are a mac user that message is telling you is that you need to open the " +
-                                    "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
-                                    "update, you need to accept the new license EULA agreement that’s part of the " +
-                                    "updated XCode.\n\n" +
-                                    "tl;dr run\n" +
-                                    "\txcode-select --install"
-                        )
-                        false
-                    }
-                    else -> {
-                        println("ERROR: can't generate a git version, this is not a git project. git status errors with error code: $exitCode")
-                        println(" -> Not a git repository (or any of the parent directories): .git")
-                        false
-                    }
+    override val isGitWorking: Boolean by lazy {
+        val result = "git status".execute()
+        if (result is ProcessResult.Error) {
+            when (val exitCode = result.errorCode) {
+                69 -> {
+                    println(
+                        "git returned with error 69\n" +
+                                "If you are a mac user that message is telling you is that you need to open the " +
+                                "application XCode on your Mac OS X/macOS and since it hasn’t run since the last " +
+                                "update, you need to accept the new license EULA agreement that’s part of the " +
+                                "updated XCode.\n\n" +
+                                "tl;dr run\n" +
+                                "\txcode-select --install"
+                    )
+                    return@lazy false
+                }
+                else -> {
+                    println("ERROR: can't generate a git version, this is not a git project. git status errors with error code: $exitCode")
+                    println(" -> Not a git repository (or any of the parent directories): .git")
+                    return@lazy false
                 }
             }
         }
+
+        return@lazy true
+    }
+
+    override val isHistoryShallowed: Boolean by lazy {
+        // returns root dir of git
+        val rootPath = "git rev-parse --show-toplevel".execute().throwOnError().text.trim()
+        val shallowFile = File("$rootPath/.git/shallow")
+
+        if (shallowFile.exists()) {
+            println(
+                "WARNING: Git history is incomplete\n" +
+                        "The gradle git version plugin requires the complete git history to calculate " +
+                        "the version. The history is shallowed, therefore the version code would be incorrect.\n" +
+                        "Please fetch the complete history with:\n" +
+                        "\tgit fetch --unshallow"
+            )
+            return@lazy true
+        }
+
+        return@lazy false
     }
 
     override fun commitsUpTo(rev: String, args: String): List<String> {
-
         val text = try {
             "git rev-list $rev $args".execute().throwOnError().text
         } catch (e: Exception) {
