@@ -1,12 +1,14 @@
 package com.pascalwelsch.gitversioner
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import java.util.Properties
 
 internal open class GenerateGitVersionName : DefaultTask() {
 
-    internal lateinit var gitVersioner: GitVersioner
+    @Internal
+    lateinit var gitVersioner: GitVersioner
 
     @TaskAction
     fun generate() {
