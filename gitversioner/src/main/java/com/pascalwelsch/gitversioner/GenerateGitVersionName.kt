@@ -5,7 +5,8 @@ import org.gradle.api.tasks.TaskAction
 import java.util.Properties
 
 internal open class GenerateGitVersionName : DefaultTask() {
-
+    
+    @internal
     internal lateinit var gitVersioner: GitVersioner
 
     @TaskAction
